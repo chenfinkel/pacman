@@ -1,180 +1,116 @@
 <!DOCTYPE html>
 <html>
 
-<head>hello</head>
+<head>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script type="text/javascript" src="javascript.js"></script>
+</head>
 
-<body>SCORE:
-<input id="lblScore" type="text"/>
-<br/>
-TIME:
-<input id="lblTime" type="text"/>
-<br/>
-<canvas id="canvas" height="600" width="600"></canvas>
+<body>
 
-
-<script type="text/javascript">
-    var context = canvas.getContext("2d");
-    var shape = new Object();
-    var board;
-    var score;
-    var pac_color;
-    var start_time;
-    var time_elapsed;
-    var interval;
-
-    Start();
-
-    function Start() {
-        board = new Array();
-        score = 0;
-        pac_color = "yellow";
-        var cnt = 100;
-        var food_remain = 50;
-        var pacman_remain = 1;
-        start_time = new Date();
-        for (var i = 0; i < 10; i++) {
-            board[i] = new Array();
-            //put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
-            for (var j = 0; j < 10; j++) {
-                if ((i === 3 && j === 3) || (i === 3 && j === 4) || (i === 3 && j === 5) || (i === 6 && j === 1) || (i === 6 && j === 2)) {
-                    board[i][j] = 4;
-                } else {
-                    var randomNum = Math.random();
-                    if (randomNum <= 1.0 * food_remain / cnt) {
-                        food_remain--;
-                        board[i][j] = 1;
-                    } else if (randomNum < 1.0 * (pacman_remain + food_remain) / cnt) {
-                        shape.i = i;
-                        shape.j = j;
-                        pacman_remain--;
-                        board[i][j] = 2;
-                    } else {
-                        board[i][j] = 0;
-                    }
-                    cnt--;
-                }
-            }
-        }
-        while (food_remain > 0) {
-            var emptyCell = findRandomEmptyCell(board);
-            board[emptyCell[0]][emptyCell[1]] = 1;
-            food_remain--;
-        }
-        keysDown = {};
-        addEventListener("keydown", function (e) {
-            keysDown[e.code] = true;
-        }, false);
-        addEventListener("keyup", function (e) {
-            keysDown[e.code] = false;
-        }, false);
-        interval = setInterval(UpdatePosition, 250);
-    }
+<div id="Game">
+    <canvas id="MyCanvas" height="600" width="600"></canvas>
+    SCORE:
+    <input id="lblScore" type="text"/>
+    <br/>
+    TIME:
+    <input id="lblTime" type="text"/>
+    <br/>
+</div>
 
 
-    function findRandomEmptyCell(board) {
-        var i = Math.floor((Math.random() * 9) + 1);
-        var j = Math.floor((Math.random() * 9) + 1);
-        while (board[i][j] !== 0) {
-            i = Math.floor((Math.random() * 9) + 1);
-            j = Math.floor((Math.random() * 9) + 1);
-        }
-        return [i, j];
-    }
+<div id="Menu" class="Top">
+        <a href="#Welcome" id="welcome" onclick="Welcome()">Welcome</a>
+        <a href="#Login" id="login" onclick="Login()">Login</a>
+        <a href="#Register" id="register" onclick="Register()">Register</a>
+        <a href="#About" id="about" onclick="showAbout()">About</a>
+</div>
 
-    /**
-     * @return {number}
-     */
-    function GetKeyPressed() {
-        if (keysDown['ArrowUp']) {
-            return 1;
-        }
-        if (keysDown['ArrowDown']) {
-            return 2;
-        }
-        if (keysDown['ArrowLeft']) {
-            return 3;
-        }
-        if (keysDown['ArrowRight']) {
-            return 4;
-        }
-    }
+<Div id="Welcome">
+        <img src="photos\pacman.png" height="180" width="450"/>
+        <button id="register" onclick="register()">Register</button>
+        <button id="login" onclick="login()">Login</button>
+</Div>
 
-    function Draw() {
-        context.clearRect(0, 0, canvas.width, canvas.height); //clean board
-        lblScore.value = score;
-        lblTime.value = time_elapsed;
-        for (var i = 0; i < 10; i++) {
-            for (var j = 0; j < 10; j++) {
-                var center = new Object();
-                center.x = i * 60 + 30;
-                center.y = j * 60 + 30;
-                if (board[i][j] === 2) {
-                    context.beginPath();
-                    context.arc(center.x, center.y, 30, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
-                    context.lineTo(center.x, center.y);
-                    context.fillStyle = pac_color; //color
-                    context.fill();
-                    context.beginPath();
-                    context.arc(center.x + 5, center.y - 15, 5, 0, 2 * Math.PI); // circle
-                    context.fillStyle = "black"; //color
-                    context.fill();
-                } else if (board[i][j] === 1) {
-                    context.beginPath();
-                    context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
-                    context.fillStyle = "black"; //color
-                    context.fill();
-                } else if (board[i][j] === 4) {
-                    context.beginPath();
-                    context.rect(center.x - 30, center.y - 30, 60, 60);
-                    context.fillStyle = "grey"; //color
-                    context.fill();
-                }
-            }
-        }
+<Div id="Settings">
+    <Div class="form-style-8">
+        <form>
+            <label>Choose number of Monsters:</label>
+            <input type="text" id="monsterNum" placeholder="1-3"/>
+            <label>Choose number of food:</label>
+            <input type="text" id="foodNum" placeholder="50-90"/>
+            <label>Choose game duration (in seconds):</label>
+            <input type="text" id="time" placeholder="must be above 60"/>
+            <Div class="button-section">
+                <button id="startgamewithP" type=button class="button" style="vertical-align:middle" onclick="startGames()"<span>Start<span/></button>
+                </button>
+            </Div>
+        </form>
+    </Div>
+</Div>
 
+<Div id="Login">
+        <form class="form-style-4" action="" method="post">
+                <label>
+                    <span>User Name:</span><input type="text" id="LoginUser"/>
+                </label><br/>
+                <label>
+                    <span>Password:</span><input type="text" id="LoginPass"/>
+                </label><br/>
+                <label>
+                    <div class="button-section">
+                        <button type=button class="button" style="vertical-align:middle"><span>Login</span></button>
+                    </div>
+                </label>
+            </form>
+</Div>
 
-    }
+<Div id="Register">
+        <form class="form-style-4" action="" method="post">
+                <label>
+                    <span>First Name:</span><input type="text" id="firstName"/>
+                </label><br/>
+                <label>
+                    <span>Last Name:</span><input type="text" id="lastName"/>
+                </label><br/>
+                <label>
+                    <span>Email:</span><input type="email" id="mail"/>
+                </label><br/>
+                <label>
+                    <span>User Name:</span><input type="text" id="RegisterUser"/>
+                </label><br/>
+                <label>
+                    <span>Password:</span><input type="password" id="RegisterPass"/>
+                </label><br/>
+                <label>
+                    <span>Birth Date:</span><input type="date" id="birthdate"/>
+                </label><br/>
+                <label>
+                    <div class="button-section">
+                        <button type=button class="button" style="vertical-align:middle"><span>Register</span></button>
+                    </div>
+                </label>
+            </form>
+</Div>
 
-    function UpdatePosition() {
-        board[shape.i][shape.j] = 0;
-        var x = GetKeyPressed();
-        if (x === 1) {
-            if (shape.j > 0 && board[shape.i][shape.j - 1] !== 4) {
-                shape.j--;
-            }
-        }
-        if (x === 2) {
-            if (shape.j < 9 && board[shape.i][shape.j + 1] !== 4) {
-                shape.j++;
-            }
-        }
-        if (x === 3) {
-            if (shape.i > 0 && board[shape.i - 1][shape.j] !== 4) {
-                shape.i--;
-            }
-        }
-        if (x === 4) {
-            if (shape.i < 9 && board[shape.i + 1][shape.j] !== 4) {
-                shape.i++;
-            }
-        }
-        if (board[shape.i][shape.j] === 1) {
-            score++;
-        }
-        board[shape.i][shape.j] = 2;
-        var currentTime = new Date();
-        time_elapsed = (currentTime - start_time) / 1000;
-        if (score >= 20 && time_elapsed <= 10) {
-            pac_color = "green";
-        }
-        if (score === 50) {
-            window.clearInterval(interval);
-            window.alert("Game completed");
-        } else {
-            Draw();
-        }
-    }
-</script>
+<Div id="AboutUs">
+        <dialog id="About">
+            <p>
+            <hr/>
+            Created By:
+            <br/>
+            Yarin Abergel 208379248
+            <br/>
+            Chen Finkelstein 203118864
+            <hr/>
+            In this assignment we used jquery 1.12.4
+            <hr/>
+            The most difficult part in this assignment was to understand how to use jquery and javascript. 
+            <hr/>
+            </p>
+            <button type="button" onclick="closeabout()" id="Abuttom" value="close">close</button>
+        </dialog>
+</Div>
 </body>
 
 </html>
