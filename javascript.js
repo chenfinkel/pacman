@@ -10,44 +10,45 @@ var interval;
 
 $(document).ready(function(){
     $("#Welcome").show();
-    $("#Game").hide();
+    $("#content").hide();
     $("#Menu").hide();
-    $("#Login").hide();
-	$("#Register").hide();
-	$("#Settings").hide();
+    $("#AboutUs").hide();
     canvas = document.getElementById("MyCanvas");
     context = canvas.getContext("2d");
 });
 
 function showAbout() {
+    $("#AboutUs").show();
     document.getElementById("About").showModal();
 }
 
 function Welcome(){
-    $("#Menu").hide();
-    $("game").hide();
     $("#Welcome").show();
-    $("#Login").hide();
-	$("#Register").hide();
-	$("#Settings").hide();
+    $("#Menu").hide();
+    $("#content").hide();
+    $("#AboutUs").hide();
 }
 
 
 function Login(){
-    $("game").hide();
+    $("#content").show();
     $("#Login").show();
     $("#Menu").show();
+    $("#Game").hide();
     $("#Welcome").hide();
 	$("#Register").hide();
-	$("#Settings").hide();
+    $("#Settings").hide();
+    $("#AboutUs").hide();
 }
 
 function Register(){
-    $("game").hide();
+    $("#content").show();
     $("#Menu").show();
     $("#Register").show();
+    $("#Game").hide();
     $("#Login").hide();
-	$("#Welcome").hide();
+    $("#Welcome").hide();
+    $("#AboutUs").hide();
 	$("#Settings").hide();
 }
 
