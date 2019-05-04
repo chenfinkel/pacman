@@ -11,8 +11,12 @@ var currentUser;
 var users = [];
 
 $(document).ready(function(){
-    $("#Welcome").show();
-    $("#content").hide();
+    $("#content").show();
+    $("#Login").hide();
+    $("#Register").hide();
+    $("#Settings").hide();
+    $("#Game").show();
+    $("#Welcome").hide();
     $("#Menu").hide();
     $("#AboutUs").hide();
     canvas = document.getElementById("MyCanvas");
@@ -97,7 +101,6 @@ function register(){
     newUser.birthdate = birthdate;
     users.push(newUser);
     showWelcome();
-	
 }
 
 function login() {
