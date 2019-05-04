@@ -47,7 +47,7 @@
 
 <div id="content">
         <Div id="Register">
-                <form class="form" action="" method="post" name="registration">
+                <form class="form" action="index.htm" method="post" name="registration">
                         <label>
                             <span>First Name:</span><input type="text" id="firstName" name="firstName" class="reg-form"/>
                         </label><br/>
@@ -68,7 +68,7 @@
                         </label><br/>
                         <label>
                             <center>
-                                <button type="submit" class="button"style="vertical-align:middle"><span>Register</span></button>
+                                <button class="button"style="vertical-align:middle" onclick="register()"><span>Register</span></button>
                                 <button class="button" style="vertical-align:middle" onclick="showWelcome()"><span>Back</span></button>
                             </center>
                         </label>
@@ -85,7 +85,7 @@
                         </label><br/>
                         <label>
                             <div class="button-section">
-                                <button type="submit" class="button" style="vertical-align:middle" onclick="login()"><span>Login</span></button>
+                                <button class="button" style="vertical-align:middle" onclick="login()"><span>Login</span></button>
                                 <button type=button class="button" style="vertical-align:middle" onclick="showWelcome()"><span>Back</span></button>
                             </div>
                         </label></center>
@@ -123,7 +123,7 @@
 
 <Div id="Welcome">
         <center><img src="photos\logo2.png" width="287px" height="350"/>
-            <br>
+        <br>
         <button id="register" onclick="showRegister()">Register</button>
         <button id="login" onclick="showLogin()">Login</button></center>
 </Div>

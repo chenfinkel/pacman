@@ -8,7 +8,7 @@ var start_time;
 var time_elapsed;
 var interval;
 var currentUser;
-var users = new Array()
+var users = [];
 
 $(document).ready(function(){
     $("#Welcome").show();
@@ -95,7 +95,7 @@ function register(){
     newUser.username = username;
     newUser.password = password;
     newUser.birthdate = birthdate;
-    users.push(newuser);
+    users.push(newUser);
     showWelcome();
 	
 }
