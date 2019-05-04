@@ -7,6 +7,8 @@ var pac_color;
 var start_time;
 var time_elapsed;
 var interval;
+var currentUser;
+var users = new Array()
 
 $(document).ready(function(){
     $("#Welcome").show();
@@ -15,6 +17,10 @@ $(document).ready(function(){
     $("#AboutUs").hide();
     canvas = document.getElementById("MyCanvas");
     context = canvas.getContext("2d");
+    aUser = new Object();
+    aUser.username = "a";
+    aUser.password = "a";
+    users[0] = aUser;
 });
 
 function showAbout() {
@@ -22,7 +28,7 @@ function showAbout() {
     document.getElementById("About").showModal();
 }
 
-function Welcome(){
+function showWelcome(){
     $("#Welcome").show();
     $("#Menu").hide();
     $("#content").hide();
@@ -30,10 +36,10 @@ function Welcome(){
 }
 
 
-function Login(){
+function showLogin(){
     $("#content").show();
     $("#Login").show();
-    $("#Menu").show();
+    $("#Menu").hide();
     $("#Game").hide();
     $("#Welcome").hide();
 	$("#Register").hide();
@@ -41,15 +47,78 @@ function Login(){
     $("#AboutUs").hide();
 }
 
-function Register(){
+function showRegister(){
     $("#content").show();
-    $("#Menu").show();
+    $("#Menu").hide();
     $("#Register").show();
     $("#Game").hide();
     $("#Login").hide();
     $("#Welcome").hide();
     $("#AboutUs").hide();
 	$("#Settings").hide();
+}
+
+function showGame(){
+    $("#content").show();
+    $("#Menu").show();
+    $("#Game").show();
+    $("#Register").hide();
+    $("#Login").hide();
+    $("#Welcome").hide();
+    $("#AboutUs").hide();
+	$("#Settings").hide();
+}
+
+function showSettings(){
+    $("#content").show();
+    $("#Menu").show();
+    $("#Settings").show();
+    $("#Register").hide();
+    $("#Login").hide();
+    $("#Welcome").hide();
+    $("#AboutUs").hide();
+	$("#Game").hide();
+}
+
+function register(){
+    var fname = $("#firstName").val();
+    var lname = $("#lastName").val();
+    var mail = $("#mail").val();
+	var username = $("#RegisterUser").val();
+    var password = $("#RegisterPass").val();
+    var birthdate = $("#birthdate").val();
+
+    newUser=new Object();
+    newUser.fname = fname;
+    newUser.lname = lname;
+    newUser.email = mail;
+    newUser.username = username;
+    newUser.password = password;
+    newUser.birthdate = birthdate;
+    users.push(newuser);
+    showWelcome();
+	
+}
+
+function login() {
+    var username = $("#LoginUser").val();
+    var password = $("#LoginPass").val();
+    var validUser = false;
+    for(var i = 0 ; i < users.length ; i++) {
+        if(!validUser && username == users[i].username && password == users[i].password){
+            validUser = true;
+            currentUser = username;
+        }
+    }
+    if(validUser == true){
+        showSettings();
+    }
+    else{
+        showLogin();
+        alert("Username or password not correct. Please try again");
+        
+    }
+
 }
 
 

@@ -1,8 +1,16 @@
+*, *:before, *:after {
+    box-sizing: border-box;
+  }
+  
+  html {
+    overflow-y: scroll;
+  }
+
 body {
     width: 100%;
     margin: 0;
     padding: 0;
-    background-color: #fff0f0;
+    background-color: #c1bdba;
 }
 
 #Menu {
@@ -34,14 +42,13 @@ header {
     position: fixed;
     top: 0;
     width: 100%;
-    height: 70px;
+    height: 50px;
     list-style-type: none;
     overflow: hidden;
-    background-color: black;
+    background-color:#006699;
     z-index: 1;
-    /*display: inline-block;
-    height: 70px;
-    width: 100%;*/
+    display: flex;
+    align-items:center;
 }
   
 li a {
@@ -61,20 +68,69 @@ li a:hover {
 
 #content
 {
-	background-color: green;
+    padding: 30px;
+    margin: 40px auto;
+    border-radius: 4px;
+    box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.3);
+	background: rgba(19, 35, 47, 0.9);
 	position:absolute;
 	top:70px;
-	left:150px;
+	left:50%;
 	width:700px;
-	height:500px;
+    min-height:520px;
+    margin: 0 0 0 -350px;
 }
 
 #Welcome
 {
-	background-color:white;
+    padding: 30px;
+    margin: 40px auto;
+    border-radius: 4px;
+    box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.3);
+	background: rgba(19, 35, 47, 0.9);
 	position:absolute;
-	top:80px;
-	left:0px;
-	width:100%;
-	height:100%;
+	top:70px;
+	left:50%;
+	width:700px;
+    height:520px;
+    margin: 0 0 0 -350px;
 }
+
+#logo{
+    max-width: 100%;
+    max-height: 95%;
+    padding-left: 10px;
+}
+
+.reg-form {
+    width: 100%;
+    padding: 6px 10px;
+    margin: 8px 0;
+    box-sizing: border-box;
+  }
+
+  input[type=text]:focus {
+    border: 3px solid #555;
+  }
+
+  .login-form{
+      width: 50%;
+      padding: 6px 10px;
+      margin: 8px 0;
+      box-sizing: border-box;
+  }
+
+  label{
+      color: #ffffff;
+      font-weight: bold;
+  }
+
+  button{
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
