@@ -17,116 +17,137 @@
     </header>
 
 
-<div id="Menu" class="Top">
+    <div id="Menu" class="Top">
+        <div class="table">
+            <ul id="horizontal-list">
+                <li><a id="welcome" onclick="showWelcome()">Welcome</a></li>
+                <li><a id="login" onclick="showLogin()">Login</a></li>
+                <li><a id="register" onclick="showRegister()">Register</a></li>
+                <li><a id="about" onclick="showAbout()">About</a></li>
+            </ul>
+        </div>
+    </div>
 
-        <li><a id="welcome" onclick="showWelcome()">Welcome</a></li>
-        <li><a id="login" onclick="showLogin()">Login</a></li>
-        <li><a id="register" onclick="showRegister()">Register</a></li>
-        <li><a id="about" onclick="showAbout()">About</a></li>
-
-</div>
-
-<Div id="AboutUs">
+    <Div id="AboutUs">
         <dialog id="About">
             <p>
-            <hr/>
-            Created By:
-            <br/>
-            Yarin Abergel 208379248
-            <br/>
-            Chen Finkelstein 203118864
-            <hr/>
-            In this assignment we used jquery 1.12.4
-            <hr/>
-            The most difficult part in this assignment was to understand how to use jquery and javascript. 
-            <hr/>
+                <hr />
+                Created By:
+                <br />
+                Yarin Abergel 208379248
+                <br />
+                Chen Finkelstein 203118864
+                <hr />
+                In this assignment we used jquery 1.12.4
+                <hr />
+                The most difficult part in this assignment was to understand how to use jquery and javascript.
+                <hr />
             </p>
             <button type="button" onclick="closeabout()" id="Abuttom" value="close">close</button>
         </dialog>
-</Div>
+    </Div>
 
-<div id="content">
+    <div id="content">
         <Div id="Register">
-                <form class="form" action="index.htm" method="post" name="registration">
-                        <label>
-                            <span>First Name:</span><input type="text" id="firstName" name="firstName" class="reg-form"/>
-                        </label><br/>
-                        <label>
-                            <span>Last Name:</span><input type="text" id="lastName" name="lastName" class="reg-form">
-                        </label><br/>
-                        <label>
-                            <span>Email:</span><input type="email" id="mail" name="mail" class="reg-form"/>
-                        </label><br/>
-                        <label>
-                            <span>User Name:</span><input type="text" id="RegisterUser" name="RegisterUser" class="reg-form"/>
-                        </label><br/>
-                        <label>
-                            <span>Password:</span><input type="password" id="RegisterPass" name="RegisterPass" class="reg-form"/>
-                        </label><br/>
-                        <label>
-                            <span>Birth Date:</span><input type="date" id="birthdate" name="birthdate" class="reg-form"/>
-                        </label><br/>
-                        <label>
-                            <center>
-                                <button class="button"style="vertical-align:middle" onclick="register()"><span>Register</span></button>
-                                <button class="button" style="vertical-align:middle" onclick="showWelcome()"><span>Back</span></button>
-                            </center>
-                        </label>
-                    </form>
+            <form class="form" action="index.htm" method="post" name="registration">
+                <label>
+                    <span>First Name:</span><input type="text" id="firstName" name="firstName" class="reg-form" />
+                </label><br />
+                <label>
+                    <span>Last Name:</span><input type="text" id="lastName" name="lastName" class="reg-form">
+                </label><br />
+                <label>
+                    <span>Email:</span><input type="email" id="mail" name="mail" class="reg-form" />
+                </label><br />
+                <label>
+                    <span>User Name:</span><input type="text" id="RegisterUser" name="RegisterUser" class="reg-form" />
+                </label><br />
+                <label>
+                    <span>Password:</span><input type="password" id="RegisterPass" name="RegisterPass"
+                        class="reg-form" />
+                </label><br />
+                <label>
+                    <span>Birth Date:</span><input type="date" id="birthdate" name="birthdate" class="reg-form" />
+                </label><br />
+                <label>
+                    <center>
+                        <input type="submit" class="button" value="Register" style="vertical-align:middle" />
+                        <button class="button" style="vertical-align:middle"
+                            onclick="showWelcome()"><span>Back</span></button>
+                    </center>
+                </label>
+            </form>
         </Div>
 
         <Div id="Login">
-                <form class="form" action="" method="post">
-                        <center><label>
-                            <span>User Name:</span><br><input type="text" id="LoginUser" class="login-form"/>
-                        </label><br/>
-                        <label>
-                            <span>Password:</span><br><input type="text" id="LoginPass" class="login-form"/>
-                        </label><br/>
-                        <label>
-                            <div class="button-section">
-                                <button class="button" style="vertical-align:middle" onclick="login()"><span>Login</span></button>
-                                <button type=button class="button" style="vertical-align:middle" onclick="showWelcome()"><span>Back</span></button>
-                            </div>
-                        </label></center>
-                    </form>
+            <form class="form" target="index.htm" action="" method="post">
+                <center><label>
+                        <span>User Name:</span><br><input type="text" id="LoginUser" class="login-form" />
+                    </label><br />
+                    <label>
+                        <span>Password:</span><br><input type="text" id="LoginPass" class="login-form" />
+                    </label><br />
+                    <label>
+                        <div class="button-section">
+                            <button type="submit" class="button"
+                                style="vertical-align:middle"><span>Login</span></button>
+                            <button type=button class="button" style="vertical-align:middle"
+                                onclick="showWelcome()"><span>Back</span></button>
+                        </div>
+                    </label></center>
+            </form>
         </Div>
-
         <Div id="Settings">
-                <Div class="form-settings>
-                    <form>
-                        <label>Choose number of Monsters:</label>
-                        <input type="text" id="monsterNum" placeholder="1-3"/>
-                        <label>Choose number of food:</label>
-                        <input type="text" id="foodNum" placeholder="50-90"/>
-                        <label>Choose game duration (in seconds):</label>
-                        <input type="text" id="time" placeholder="must be above 60"/>
-                        <Div class="button-section">
-                            <button id="startgamewithP" type=button class="button" style="vertical-align:middle" onclick="startGames()"<span>Start<span/></button>
-                            </button>
-                        </Div>
+                <form class="form" target="index.htm" action="" method="post">
+                        <center>
+                            <label>
+                                <span>Choose number of Monsters:</span><input type="text" id="monsterNum" placeholder="1-3"/>
+                            </label>
+                            <label>
+                                <span>Choose number of food:<input type="text" id="foodNum" placeholder="50-90"/>
+                            </label>
+                            <label>
+                                    <span>Choose game duration (in seconds):</span><input type="text" id="gameTime" placeholder="must be above 60"/>
+                            </label>
+                            <label>
+                                <Div class="button-section">
+                                    <button id="start" type="submit" class="button" style="vertical-align:middle" onclick="Start()"<span>Start<span/></button>
+                                    </button>
+                                    <button id="randomSettings" type=button class="button" style="vertical-align:middle" onclick="randomSettings()"<span>Random<span/></button>
+                                    </button>
+                                </Div>
+                            </label>
+                    </center>
                     </form>
-                </Div>
         </Div>
+    </Div>
 
-        <div id="Game">
-                <canvas id="MyCanvas" height="600" width="600"></canvas>
-                SCORE:
-                <input id="lblScore" type="text"/>
-                <br/>
-                TIME:
-                <input id="lblTime" type="text"/>
-                <br/>
-        </div>
+    <div id="Game">
+        <canvas id="MyCanvas" height="600" width="600"></canvas>
+        SCORE:
+        <input id="lblScore" type="text" />
+        <br />
+        TIME:
+        <input id="lblTime" type="text" />
+        <br />
+    </div>
 
-</div>
+    </div>
 
-<Div id="Welcome">
-        <center><img src="photos\logo2.png" width="287px" height="350"/>
-        <br>
-        <button id="register" onclick="showRegister()">Register</button>
-        <button id="login" onclick="showLogin()">Login</button></center>
-</Div>
+    <Div id="Welcome">
+        <center><img src="photos\logo2.png" width="287px" height="350" />
+            <br>
+            <button id="register" class="button" onclick="showRegister()">Register</button>
+            <button id="login" class="button" onclick="showLogin()">Login</button></center>
+    </Div>
+
+    <footer>
+        <p>This game was created by Chen and Yarin<br></p>
+        <p>Contact information: <a href="mailto:chenfi@post.bgu.ac.il">
+                Chen Finkelstein</a>
+                <a href="mailto:yarinab@post.bgu.ac.il">
+                        Yarin Abergel</a>.</p>
+    </footer>
 
 </body>
 

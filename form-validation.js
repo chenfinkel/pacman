@@ -54,7 +54,7 @@ $(function() {
         birthdate: {
             required: "Please enter your birth date"
         }
-      },
+      }
     });
   });
 

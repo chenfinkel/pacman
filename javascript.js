@@ -7,20 +7,28 @@ var pac_color;
 var start_time;
 var time_elapsed;
 var interval;
+var monsterColor = "white"; 
 var currentUser;
+var monsNum; 
+var foodN;
+var time;
 var users = [];
 
 $(document).ready(function(){
-    $("#content").show();
-    $("#Login").hide();
-    $("#Register").hide();
-    $("#Settings").hide();
-    $("#Game").show();
-    $("#Welcome").hide();
+    $("#Welcome").show();
+    $("#content").hide();
     $("#Menu").hide();
     $("#AboutUs").hide();
     canvas = document.getElementById("MyCanvas");
     context = canvas.getContext("2d");
+    document.getElementById("Register").addEventListener("submit", function(e) {
+        e.preventDefault();
+        register();
+    });
+    document.getElementById("Login").addEventListener("submit", function(e) {
+        e.preventDefault();
+        login();
+    });
     aUser = new Object();
     aUser.username = "a";
     aUser.password = "a";
@@ -207,35 +215,84 @@ function Draw() {
     context.clearRect(0, 0, canvas.width, canvas.height); //clean board
     lblScore.value = score;
     lblTime.value = time_elapsed;
+    //var startPoint = new Object();
+    //startPoint.x = i * 60 + 30;
+    //startPoint.y = j * 60 + 30;
+    //context.beginPath();
+    //context.arc(center.x, center.y, 30, -0.35 * Math.PI, 1.35 * Math.PI); // half circle
+    //context.lineTo(center.x, center.y);
+    //context.fillStyle = monsterColor; //color 
+    //context.fill();
     for (var i = 0; i < 10; i++) {
         for (var j = 0; j < 10; j++) {
             var center = new Object();
             center.x = i * 60 + 30;
             center.y = j * 60 + 30;
             if (board[i][j] === 2) {
-                context.beginPath();
-                context.arc(center.x, center.y, 30, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
+                //should put the first drawing of the pacman
+                if(GetKeyPressed() == 1)
+				{
+				context.beginPath();
+                context.arc(center.x, center.y, 30, -0.35 * Math.PI, 1.35 * Math.PI); // half circle
                 context.lineTo(center.x, center.y);
-                context.fillStyle = pac_color; //color
+                context.fillStyle = pac_color; //color 
                 context.fill();
                 context.beginPath();
-                context.arc(center.x + 5, center.y - 15, 5, 0, 2 * Math.PI); // circle
+                context.arc(center.x + 14, center.y - 10, 5, 0, 2 * Math.PI); // circle
+                context.fillStyle = "black"; //color 
+                context.fill();
+                }
+                else if(GetKeyPressed() == 2)
+                {
+                context.beginPath();
+                context.arc(center.x, center.y, 30, 0.65 * Math.PI, 2.35 * Math.PI); // half circle
+                context.lineTo(center.x, center.y); // the triangle
+                context.fillStyle = pac_color; //color if the pacman
+                context.fill();
+                context.beginPath();
+                context.arc(center.x + 10, center.y - 3, 5, 0, 2 * Math.PI); // circle eye
                 context.fillStyle = "black"; //color
                 context.fill();
+                }
+                else if(GetKeyPressed() == 3)
+                {
+                context.beginPath();
+                context.arc(center.x, center.y, 30, 1.15* Math.PI, 2.85 * Math.PI,false);                context.lineTo(center.x, center.y); // the triangle
+                context.fillStyle = pac_color; //color if the pacman
+                context.fill();
+                context.beginPath();
+                context.arc(center.x + 5, center.y - 15, 5, 0, 2 * Math.PI); // circle eye
+                context.fillStyle = "black"; //color
+                context.fill();
+                }
+                else if(GetKeyPressed() == 4)
+                {
+                    context.beginPath();
+                    context.arc(center.x, center.y, 30, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
+                    context.lineTo(center.x, center.y); // the triangle is downwards.
+                    context.fillStyle = pac_color; //color if the pacman
+                    context.fill();
+                    context.beginPath();
+                    context.arc(center.x + 5, center.y - 15, 5, 0, 2 * Math.PI); // circle eye
+                    context.fillStyle = "black"; //color
+                    context.fill(); 
+                }
+                	
             } else if (board[i][j] === 1) {
                 context.beginPath();
                 context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
-                context.fillStyle = "black"; //color
+                context.fillStyle = "black"; //color of the food 
                 context.fill();
-            } else if (board[i][j] === 4) {
+            } else if (board[i][j] === 4) { //handles the walls 
                 context.beginPath();
                 context.rect(center.x - 30, center.y - 30, 60, 60);
                 context.fillStyle = "grey"; //color
                 context.fill();
-            } else if (board[i][j] === 0) {
+            } 
+            else if (board[i][j] === 0) {
                 context.beginPath();
                 context.rect(center.x - 30, center.y - 30, 60, 60);
-                context.fillStyle = "black"; //color
+                context.fillStyle = "rgba(19, 35, 47, 0)"; //color when there aint nothing
                 context.fill();
             }
         }
@@ -280,4 +337,11 @@ function UpdatePosition() {
     } else {
         Draw();
     }
+}
+
+function randomizeSetts() {
+    document.getElementById("monsterNum").value = Math.floor(Math.random() * 3) + 1; 
+    var foodN = Math.floor(Math.random() * 30) + 50;
+    document.getElementById("foodNum").value = foodN;
+    document.getElementById("gameTime").value = Math.floor(Math.random() * 59) + 1;
 }
