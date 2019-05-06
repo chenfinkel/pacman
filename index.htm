@@ -155,13 +155,17 @@
             </form>
         </Div>
         <div id="Game">
-                <canvas id="MyCanvas" height="450" width="700" style="border: black"></canvas>
-                SCORE:
-                <input id="lblScore" type="text"/>
-                <br/>
-                TIME:
-                <input id="lblTime" type="text"/>
-                <br/>
+                <div id="gameDetails">
+                    <label>
+                        <span>Score:</span><input id="lblScore" type="text" size="4"/>
+                    </label>
+                    <label>
+                        <span>Time:</span><input id="lblTime" type="text" size="5"/>
+                    </label>
+                    <label>Lives:</label>
+                    <label id="lifeLeft"></label>
+                </div>
+                <canvas id="MyCanvas"></canvas>         
         </div>
     
     </div>

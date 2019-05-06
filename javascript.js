@@ -9,9 +9,9 @@ var time_elapsed;
 var interval;
 var monsterColor = "white"; 
 var currentUser;
-var monsNum; 
-var foodN;
-var time;
+var numOfMonsters; 
+var numOfFood;
+var gameTime;
 var keys = {};
 var users = [];
 
@@ -32,7 +32,7 @@ $(document).ready(function(){
     });
     document.getElementById("Settings").addEventListener("submit", function(e) {
         e.preventDefault();
-        showGame();
+        saveSettings();
     });
     document.getElementById("buttons").addEventListener("submit", function(e) {
         e.preventDefault();
@@ -95,7 +95,6 @@ function showGame(){
     $("#Welcome").hide();
     $("#AboutUs").hide();
     $("#Settings").hide();
-    Start();
 }
 
 function showSettings(){
@@ -150,13 +149,21 @@ function login() {
 
 }
 
+function saveSettings(){
+    numOfFood = document.getElementById("foodNum").value;
+    numOfMonsters = document.getElementById("monsterNum").value;
+    gameTime = document.getElementById("gameTime").value;
+    showGame()
+    Start();
+}
+
 
 function Start() {
     board = new Array();
     score = 0;
     pac_color = "yellow";
     var cnt = 100;
-    var food_remain = document.getElementById("foodNum").value;
+    var food_remain = numOfFood;
     var pacman_remain = 1; // needs to be changed when get eaten by a monster
     start_time = new Date();
     for (var i = 0; i < 13; i++) {
@@ -273,20 +280,20 @@ function Draw() {
     for (var i = 0; i < 13; i++) {
         for (var j = 0; j < 13; j++) {
             var center = new Object();
-            center.x = i * 70 + 35;
-            center.y = j * 45 + 23;
+            center.x = i * 50 + 25;
+            center.y = j * 26 + 13;
             if (board[i][j] === 2) {
                 //should put the first drawing of the pacman
                 //if up
                 if(GetKeyPressed() == 1)
 				{
 				    context.beginPath();
-                    context.arc(center.x, center.y, 20, -0.35 * Math.PI, 1.35 * Math.PI); // half circle
+                    context.arc(center.x, center.y, 12, -0.35 * Math.PI, 1.35 * Math.PI); // half circle
                     context.lineTo(center.x, center.y);
                     context.fillStyle = pac_color; //color 
                     context.fill();
                     context.beginPath();
-                    context.arc(center.x - 10, center.y, 3, 0, 2 * Math.PI); // circle
+                    context.arc(center.x - 6, center.y, 3, 0, 2 * Math.PI); // circle
                     context.fillStyle = "black"; //color 
                     context.fill();
                 }
@@ -294,12 +301,12 @@ function Draw() {
                 else if(GetKeyPressed() == 2)
                 {
                 context.beginPath();
-                context.arc(center.x, center.y, 20, 0.65 * Math.PI, 2.35 * Math.PI); // half circle
+                context.arc(center.x, center.y, 12, 0.65 * Math.PI, 2.35 * Math.PI); // half circle
                 context.lineTo(center.x, center.y); // the triangle
                 context.fillStyle = pac_color; //color if the pacman
                 context.fill();
                 context.beginPath();
-                context.arc(center.x - 10, center.y, 3, 0, 2 * Math.PI); // circle eye
+                context.arc(center.x - 6, center.y, 3, 0, 2 * Math.PI); // circle eye
                 context.fillStyle = "black"; //color
                 context.fill();
                 }
@@ -307,12 +314,12 @@ function Draw() {
                 else if(GetKeyPressed() == 3)
                 {
                 context.beginPath();
-                context.arc(center.x, center.y, 20, 1.15* Math.PI, 2.85 * Math.PI,false);                
+                context.arc(center.x, center.y, 12, 1.15* Math.PI, 2.85 * Math.PI,false);                
                 context.lineTo(center.x, center.y); // the triangle
                 context.fillStyle = pac_color; //color if the pacman
                 context.fill();
                 context.beginPath();
-                context.arc(center.x, center.y - 10, 3, 0, 2 * Math.PI); // circle eye
+                context.arc(center.x, center.y - 6, 3, 0, 2 * Math.PI); // circle eye
                 context.fillStyle = "black"; //color
                 context.fill();
                 }
@@ -320,30 +327,30 @@ function Draw() {
                 else if(GetKeyPressed() == 4)
                 {
                     context.beginPath();
-                    context.arc(center.x, center.y, 20, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
+                    context.arc(center.x, center.y, 12, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
                     context.lineTo(center.x, center.y); // the triangle is downwards.
                     context.fillStyle = pac_color; //color if the pacman
                     context.fill();
                     context.beginPath();
-                    context.arc(center.x, center.y - 10, 3, 0, 2 * Math.PI); // circle eye
+                    context.arc(center.x, center.y - 6, 3, 0, 2 * Math.PI); // circle eye
                     context.fillStyle = "black"; //color
                     context.fill(); 
                 }
                 	
             } else if (board[i][j] === 1) {
                 context.beginPath();
-                context.arc(center.x, center.y, 10, 0, 2 * Math.PI); // circle
+                context.arc(center.x, center.y, 7, 0, 2 * Math.PI); // circle
                 context.fillStyle = "black"; //color of the food 
                 context.fill();
             } else if (board[i][j] === 4) { //handles the walls 
                 context.beginPath();
-                context.rect(center.x - 35, center.y - 23, 70, 45);
+                context.rect(center.x - 35, center.y - 18, 70, 35);
                 context.fillStyle = "grey"; //color
                 context.fill();
             } 
             else if (board[i][j] === 0) {
                 context.beginPath();
-                context.rect(center.x - 35, center.y - 23, 70, 45);
+                context.rect(center.x - 35, center.y - 18, 70, 35);
                 context.fillStyle = "rgba(19, 35, 47, 0)"; //color when there aint nothing
                 context.fill();
             }
