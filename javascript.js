@@ -1,6 +1,6 @@
 var canvas;
 var context;
-var shape = new Object();
+var pacmanPosition = new Object();
 var board;
 var score;
 var pac_color;
@@ -196,7 +196,7 @@ function Start() {
             }
         }
     }
-    shape.side = 4;
+    pacmanPosition.side = 4;
     keysDown = {};
     addEventListener("keydown", function (e) {
         keysDown[e.code] = true;
@@ -238,7 +238,7 @@ function Draw() {
             if (board[i][j] === 2) {
                 //should put the first drawing of the pacman
                 //if up
-                if(shape.side == 1)
+                if(pacmanPosition.side == 1)
 				{
 				    context.beginPath();
                     context.arc(center.x, center.y, 11, -0.35 * Math.PI, 1.35 * Math.PI); // half circle
@@ -252,7 +252,7 @@ function Draw() {
                     context.closePath();
                 }
                 //if down
-                else if(shape.side == 2)
+                else if(pacmanPosition.side == 2)
                 {
                 context.beginPath();
                 context.arc(center.x, center.y, 11, 0.65 * Math.PI, 2.35 * Math.PI); // half circle
@@ -266,7 +266,7 @@ function Draw() {
                 context.closePath();
                 }
                 //if left
-                else if(shape.side == 3)
+                else if(pacmanPosition.side == 3)
                 {
                 context.beginPath();
                 context.arc(center.x, center.y, 11, 1.15* Math.PI, 2.85 * Math.PI,false);                
@@ -280,7 +280,7 @@ function Draw() {
                 context.closePath();
                 }
                 //if right
-                else if(shape.side == 4)
+                else if(pacmanPosition.side == 4)
                 {
                     context.beginPath();
                     context.arc(center.x, center.y, 11, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
@@ -339,44 +339,44 @@ function Draw() {
 }
 
 function UpdatePosition() {
-    board[shape.i][shape.j] = 0;
+    board[pacmanPosition.i][pacmanPosition.j] = 0;
     var x = GetKeyPressed();
     //up
     if (x === 1) {
-        if (shape.j > 0 && board[shape.i][shape.j - 1] !== 4) {
-            shape.j--;
-            shape.side = 1;
+        if (pacmanPosition.j > 0 && board[pacmanPosition.i][pacmanPosition.j - 1] !== 4) {
+            pacmanPosition.j--;
+            pacmanPosition.side = 1;
         }
     }
     //down
     if (x === 2) {
-        if (shape.j < 12 && board[shape.i][shape.j + 1] !== 4) {
-            shape.j++;
-            shape.side = 2;
+        if (pacmanPosition.j < 12 && board[pacmanPosition.i][pacmanPosition.j + 1] !== 4) {
+            pacmanPosition.j++;
+            pacmanPosition.side = 2;
         }
     }
     //left
     if (x === 3) {
-        if (shape.i > 0 && board[shape.i - 1][shape.j] !== 4) {
-            shape.i--;
-            shape.side = 3;
+        if (pacmanPosition.i > 0 && board[pacmanPosition.i - 1][pacmanPosition.j] !== 4) {
+            pacmanPosition.i--;
+            pacmanPosition.side = 3;
         }
     }
     //right
     if (x === 4) {
-        if (shape.i < 23 && board[shape.i + 1][shape.j] !== 4) {
-            shape.i++;
-            shape.side = 4;
+        if (pacmanPosition.i < 23 && board[pacmanPosition.i + 1][pacmanPosition.j] !== 4) {
+            pacmanPosition.i++;
+            pacmanPosition.side = 4;
         }
     }
-    if (board[shape.i][shape.j] === 1) {
+    if (board[pacmanPosition.i][pacmanPosition.j] === 1) {
         score++;
-    } else if (board[shape.i][shape.j] === 5) {
+    } else if (board[pacmanPosition.i][pacmanPosition.j] === 5) {
         score+=15;
-    } else if (board[shape.i][shape.j] === 6) {
+    } else if (board[pacmanPosition.i][pacmanPosition.j] === 6) {
         score+=25;
     }
-    board[shape.i][shape.j] = 2;
+    board[pacmanPosition.i][pacmanPosition.j] = 2;
     var currentTime = new Date();
     time_elapsed = (currentTime - start_time) / 1000;
     if (score >= 20 && time_elapsed <= 10) {
@@ -392,7 +392,8 @@ function UpdatePosition() {
 
 function repositionMonsters(){
     for (var i = 0; i < numOfMonsters; i++){
-        
+        var x = mosters[i].i;
+        var y = monsters[i].j;
     }
 }
 
@@ -541,8 +542,8 @@ function setFoodColors() {
         if (board[randCol][randRow] != 4 && board[randCol][randRow] != 1 &&
             board[randCol][randRow] != 5 && board[randCol][randRow] != 6){
                 board[randCol][randRow] = 2;
-                shape.i = randCol;
-                shape.j = randRow;
+                pacmanPosition.i = randCol;
+                pacmanPosition.j = randRow;
                 placed = true;
             }
     }
