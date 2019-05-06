@@ -14,13 +14,10 @@ var numOfFood;
 var gameTime;
 var keys = {};
 var users = [];
+var monsters = [];
 var fivePts;
-var TFPs;
-var fifPts; 
-//ahuzim
-var sixsty; 
-var thirty;
-var ten;
+var TFPts;
+var fifPts;
 
 $(document).ready(function(){
     $("#Welcome").show();
@@ -125,6 +122,11 @@ function showSettings(){
 	$("#Game").hide();
 }
 
+function back(e){
+    e.preventDefault();
+    showWelcome();
+}
+
 function register(){
     var fname = $("#firstName").val();
     var lname = $("#lastName").val();
@@ -178,42 +180,23 @@ function Start() {
     board = new Array();
     score = 0;
     pac_color = "yellow";
-    var cnt = 100;
     var food_remain = numOfFood;
-    var pacman_remain = 1; // needs to be changed when get eaten by a monster
     start_time = new Date();
     for (var i = 0; i < 24; i++) {
         board[i] = new Array(13);
     }
     placeBorder();
+    placeFood();
+    placePacMan();
+    placeMonsters();
     for (var i = 0; i < 24; i++) {
-        //put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
         for (var j = 0; j < 13; j++) {
-            //place border
-            if (board[i][j] != 4) {
-                var randomNum = Math.random();
-                if (randomNum <= 1.0 * food_remain / cnt) {
-                    food_remain--;
-                    board[i][j] = 1;
-                    //place pacman
-                } else if (randomNum < 1.0 * (pacman_remain + food_remain) / cnt) {
-                    shape.i = i;
-                    shape.j = j;
-                    pacman_remain--;
-                    board[i][j] = 2;
-                } else {
+            if (!board[i][j]) {
                     board[i][j] = 0;
-                }
-                cnt--;
             }
         }
     }
     shape.side = 4;
-    while (food_remain > 0) {
-        var emptyCell = findRandomEmptyCell(board);
-        board[emptyCell[0]][emptyCell[1]] = 1;
-        food_remain--;
-    }
     keysDown = {};
     addEventListener("keydown", function (e) {
         keysDown[e.code] = true;
@@ -222,28 +205,6 @@ function Start() {
         keysDown[e.code] = false;
     }, false);
     interval = setInterval(UpdatePosition, 150);
-}
-
-
-function findRandomEmptyCell(board) {
-    var i = Math.floor((Math.random() * 9) + 1);
-    var j = Math.floor((Math.random() * 9) + 1);
-    while (board[i][j] !== 0) {
-        i = Math.floor((Math.random() * 9) + 1);
-        j = Math.floor((Math.random() * 9) + 1);
-    }
-    return [i, j];
-}
-
-
-function findRandomEmptyCell(board) {
-    var i = Math.floor((Math.random() * 9) + 1);
-    var j = Math.floor((Math.random() * 9) + 1);
-    while (board[i][j] !== 0) {
-        i = Math.floor((Math.random() * 9) + 1);
-        j = Math.floor((Math.random() * 9) + 1);
-    }
-    return [i, j];
 }
 
 /**
@@ -265,7 +226,8 @@ function GetKeyPressed() {
 }
 
 function Draw() {
-    context.clearRect(0, 0, canvas.width, canvas.height); //clean board
+    context.clearRect(0, 0, canvas.width, canvas.height);//clean board
+    context.fillRect(0, 0, canvas.width, canvas.height);
     lblScore.value = score;
     lblTime.value = time_elapsed;
     for (var i = 0; i < 24; i++) {
@@ -279,7 +241,7 @@ function Draw() {
                 if(shape.side == 1)
 				{
 				    context.beginPath();
-                    context.arc(center.x, center.y, 10, -0.35 * Math.PI, 1.35 * Math.PI); // half circle
+                    context.arc(center.x, center.y, 11, -0.35 * Math.PI, 1.35 * Math.PI); // half circle
                     context.lineTo(center.x, center.y);
                     context.fillStyle = pac_color; //color 
                     context.fill();
@@ -293,7 +255,7 @@ function Draw() {
                 else if(shape.side == 2)
                 {
                 context.beginPath();
-                context.arc(center.x, center.y, 10, 0.65 * Math.PI, 2.35 * Math.PI); // half circle
+                context.arc(center.x, center.y, 11, 0.65 * Math.PI, 2.35 * Math.PI); // half circle
                 context.lineTo(center.x, center.y); // the triangle
                 context.fillStyle = pac_color; //color if the pacman
                 context.fill();
@@ -307,7 +269,7 @@ function Draw() {
                 else if(shape.side == 3)
                 {
                 context.beginPath();
-                context.arc(center.x, center.y, 10, 1.15* Math.PI, 2.85 * Math.PI,false);                
+                context.arc(center.x, center.y, 11, 1.15* Math.PI, 2.85 * Math.PI,false);                
                 context.lineTo(center.x, center.y); // the triangle
                 context.fillStyle = pac_color; //color if the pacman
                 context.fill();
@@ -321,7 +283,7 @@ function Draw() {
                 else if(shape.side == 4)
                 {
                     context.beginPath();
-                    context.arc(center.x, center.y, 10, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
+                    context.arc(center.x, center.y, 11, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
                     context.lineTo(center.x, center.y); // the triangle is downwards.
                     context.fillStyle = pac_color; //color if the pacman
                     context.fill();
@@ -335,8 +297,30 @@ function Draw() {
             } else if (board[i][j] === 1) {
                 context.beginPath();
                 context.arc(center.x, center.y, 7, 0, 2 * Math.PI); // circle
-                context.fillStyle = "red"; //color of the food 
+                context.fillStyle = fivePts; //color of the food 
                 context.fill();
+            } else if (board[i][j] === 5) {
+                context.beginPath();
+                context.arc(center.x, center.y, 7, 0, 2 * Math.PI); // circle
+                context.fillStyle = fifPts; //color of the food 
+                context.fill();
+            } else if (board[i][j] === 6) {
+                context.beginPath();
+                context.arc(center.x, center.y, 7, 0, 2 * Math.PI); // circle
+                context.fillStyle = TFPts; //color of the food 
+                context.fill();
+            } else if (board[i][j] === 7) {
+                var img = new Image();
+                img.src = "photos/purpleGhost.png";
+                context.drawImage(img,center.x - 13, center.y - 13, 27, 27);
+            } else if (board[i][j] === 8) {
+                var img = new Image();
+                img.src = "photos/redGhost.png";
+                context.drawImage(img,center.x - 13, center.y - 13, 27, 27);
+            } else if (board[i][j] === 9) {
+                var img = new Image();
+                img.src = "photos/blueGhost.png";
+                context.drawImage(img,center.x - 13, center.y - 13, 27, 27);
             } else if (board[i][j] === 4) { //handles the walls 
                 context.beginPath();
                 context.rect(center.x - 13, center.y - 13, 27, 27);
@@ -346,9 +330,10 @@ function Draw() {
             else if (board[i][j] === 0) {
                 context.beginPath();
                 context.rect(center.x - 13, center.y - 13, 27, 27);
-                context.fillStyle = "rgba(19, 35, 47, 0)"; //color when there aint nothing
+                context.fillStyle = "black"; //color when there aint nothing
                 context.fill();
             }
+            context.closePath();
         }
     }
 }
@@ -386,6 +371,10 @@ function UpdatePosition() {
     }
     if (board[shape.i][shape.j] === 1) {
         score++;
+    } else if (board[shape.i][shape.j] === 5) {
+        score+=15;
+    } else if (board[shape.i][shape.j] === 6) {
+        score+=25;
     }
     board[shape.i][shape.j] = 2;
     var currentTime = new Date();
@@ -401,6 +390,12 @@ function UpdatePosition() {
     }
 }
 
+function repositionMonsters(){
+    for (var i = 0; i < numOfMonsters; i++){
+        
+    }
+}
+
 function randomSettings() {
     document.getElementById("monsterNum").value = Math.floor(Math.random() * 3) + 1; 
     var foodN = Math.floor(Math.random() * 30) + 50;
@@ -409,7 +404,19 @@ function randomSettings() {
     max = Math.floor(600);
     var random =  Math.floor(Math.random() * (max - min + 1)) + min;
     document.getElementById("gameTime").value = random;
+    fivePts = getRandomColor();
+    fifPts = getRandomColor();
+    TFPts = getRandomColor();
 }
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
 
 function setKey(e, side){
     e.preventDefault();
@@ -525,3 +532,68 @@ function setFoodColors() {
     $("#AboutUs").hide();
 	$("#Game").hide();
   }
+
+  function placePacMan(){
+    var placed = false;
+    while (!placed){
+        var randRow = Math.floor(Math.random() * 13); 
+        var randCol =  Math.floor(Math.random() * 24);
+        if (board[randCol][randRow] != 4 && board[randCol][randRow] != 1 &&
+            board[randCol][randRow] != 5 && board[randCol][randRow] != 6){
+                board[randCol][randRow] = 2;
+                shape.i = randCol;
+                shape.j = randRow;
+                placed = true;
+            }
+    }
+  }
+
+function placeFood(){
+
+    var sixty = Math.floor(0.6*numOfFood); 
+    var thirty = Math.floor(0.3*numOfFood);
+    var ten = numOfFood - sixty - thirty;
+    var precents = [sixty, thirty, ten];
+    var index = 0;
+
+    while(index < 3) {
+        var food = precents[index];
+        while(food > 0) {
+            var randRow = Math.floor(Math.random() * 13); 
+            var randCol =  Math.floor(Math.random() * 24);
+            if (board[randCol][randRow] != 4){
+                if (index == 1){
+                    board[randCol][randRow] = 1;
+                } else if (index == 2) {
+                    board[randCol][randRow] = 5;
+                } else {
+                    board[randCol][randRow] = 6;
+                }
+                food--;
+            }
+        }
+        index++;
+    }
+}
+
+function placeMonsters(){
+    var monster1 = new Object();
+    monster1.i = 0;
+    monster1.j = 0;
+    monsters[0] = monster1;
+    board[0][0] = 7;
+    if (numOfMonsters > 1) {
+        var monster2 = new Object();
+        monster2.i = 23;
+        monster2.j = 0;
+        monsters[1] = monster2;
+        board[23][0] = 8;
+        if (numOfMonsters > 2) {
+            var monster3 = new Object();
+            monster3.i = 0;
+            monster3.j = 12;
+            monsters[2] = monster3;
+            board[0][12] = 9;
+        }
+    }
+}

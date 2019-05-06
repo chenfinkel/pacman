@@ -62,11 +62,12 @@ footer {
   
 li a {
     font-family: 'Sniglet', cursive;
+    font-size: 20pt;
     display: block;
     color: #aae2b2;
     text-align: center;
     padding: 5px 16px;
-    height: 30px;
+    height: 80px;
     text-decoration: none;
     font-weight: bold;
     width: 150px
@@ -74,6 +75,7 @@ li a {
   
 li a:hover {
     background-color: #006655;
+    cursor: pointer;
 }
 
 #content

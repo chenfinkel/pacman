@@ -19,7 +19,7 @@
 
     <div id="Menu" class="Top">
         <div class="table">
-            <ul id="horizontal-list">
+            <ul id="horizontal-list" style="list-style-type: none; margin: 0; padding: 0;">
                 <li><a id="welcome" onclick="showWelcome()">Welcome</a></li>
                 <li><a id="login" onclick="showLogin()">Login</a></li>
                 <li><a id="register" onclick="showRegister()">Register</a></li>
@@ -74,7 +74,7 @@
                     <center>
                         <input type="submit" class="button" value="Register" style="vertical-align:middle" />
                         <button class="button" style="vertical-align:middle"
-                            onclick="showWelcome()"><span>Back</span></button>
+                            onclick="back(event)"><span>Back</span></button>
                     </center>
                 </label>
             </center>
@@ -92,7 +92,7 @@
                     <label>
                         <button type="submit" class="button" style="vertical-align:middle"><span>Login</span></button>
                         <button type=button class="button" style="vertical-align:middle"
-                            onclick="showWelcome()"><span>Back</span></button>
+                            onclick="back(event)"><span>Back</span></button>
                     </label></center>
             </form>
         </Div>

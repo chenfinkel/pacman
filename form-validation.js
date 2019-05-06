@@ -33,28 +33,6 @@ $(function() {
             required: true, 
         }
       },
-      // Specify validation error messages
-      messages: {
-        firstname: {
-            required: "Please enter your first name",
-            lettersonly: "First name can not contain digits"
-        },
-        lastname:  {
-            required: "Please enter your last name",
-            lettersonly: "Last name can not contain digits"
-        },
-        password: {
-          required: "Please provide a password",
-          minlength: "Your password must be at least 8 characters long"
-        },
-        email:{
-            required: "Please enter your email address",
-            email: "Please enter a valid email address"
-        },
-        birthdate: {
-            required: "Please enter your birth date"
-        }
-      },
     });
 
     $("form[name='settings']").validate({
