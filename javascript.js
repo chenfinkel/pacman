@@ -14,6 +14,13 @@ var numOfFood;
 var gameTime;
 var keys = {};
 var users = [];
+var fivePts;
+var TFPs;
+var fifPts; 
+//ahuzim
+var sixsty; 
+var thirty;
+var ten;
 
 $(document).ready(function(){
     $("#Welcome").show();
@@ -38,6 +45,11 @@ $(document).ready(function(){
         e.preventDefault();
         setKeys();
     });
+    document.getElementById("foodColor").addEventListener("submit", function(e) {
+        e.preventDefault();
+        setFoodColors();
+    });
+
     aUser = new Object();
     aUser.username = "a";
     aUser.password = "a";
@@ -65,6 +77,7 @@ function showLogin(){
     $("#content").show();
     $("#Login").show();
     $("#buttons").hide();
+    $("#foodColor").hide();
     $("#Menu").hide();
     $("#Game").hide();
     $("#Welcome").hide();
@@ -77,6 +90,7 @@ function showRegister(){
     $("#content").show();
     $("#Register").show();
     $("#Menu").hide();
+    $("#foodColor").hide();
     $("#buttons").hide();
     $("#Game").hide();
     $("#Login").hide();
@@ -90,6 +104,7 @@ function showGame(){
     $("#Menu").show();
     $("#Game").show();
     $("#Register").hide();
+    $("#foodColor").hide();
     $("#buttons").hide();
     $("#Login").hide();
     $("#Welcome").hide();
@@ -103,6 +118,7 @@ function showSettings(){
     $("#Settings").show();
     $("#Register").hide();
     $("#buttons").hide();
+    $("#foodColor").hide(); 
     $("#Login").hide();
     $("#Welcome").hide();
     $("#AboutUs").hide();
@@ -263,7 +279,7 @@ function Draw() {
                 if(shape.side == 1)
 				{
 				    context.beginPath();
-                    context.arc(center.x, center.y, 12, -0.35 * Math.PI, 1.35 * Math.PI); // half circle
+                    context.arc(center.x, center.y, 10, -0.35 * Math.PI, 1.35 * Math.PI); // half circle
                     context.lineTo(center.x, center.y);
                     context.fillStyle = pac_color; //color 
                     context.fill();
@@ -271,12 +287,13 @@ function Draw() {
                     context.arc(center.x - 6, center.y, 2, 0, 2 * Math.PI); // circle
                     context.fillStyle = "black"; //color 
                     context.fill();
+                    context.closePath();
                 }
                 //if down
                 else if(shape.side == 2)
                 {
                 context.beginPath();
-                context.arc(center.x, center.y, 12, 0.65 * Math.PI, 2.35 * Math.PI); // half circle
+                context.arc(center.x, center.y, 10, 0.65 * Math.PI, 2.35 * Math.PI); // half circle
                 context.lineTo(center.x, center.y); // the triangle
                 context.fillStyle = pac_color; //color if the pacman
                 context.fill();
@@ -284,12 +301,13 @@ function Draw() {
                 context.arc(center.x - 6, center.y, 2, 0, 2 * Math.PI); // circle eye
                 context.fillStyle = "black"; //color
                 context.fill();
+                context.closePath();
                 }
                 //if left
                 else if(shape.side == 3)
                 {
                 context.beginPath();
-                context.arc(center.x, center.y, 12, 1.15* Math.PI, 2.85 * Math.PI,false);                
+                context.arc(center.x, center.y, 10, 1.15* Math.PI, 2.85 * Math.PI,false);                
                 context.lineTo(center.x, center.y); // the triangle
                 context.fillStyle = pac_color; //color if the pacman
                 context.fill();
@@ -297,12 +315,13 @@ function Draw() {
                 context.arc(center.x, center.y - 6, 2, 0, 2 * Math.PI); // circle eye
                 context.fillStyle = "black"; //color
                 context.fill();
+                context.closePath();
                 }
                 //if right
                 else if(shape.side == 4)
                 {
                     context.beginPath();
-                    context.arc(center.x, center.y, 12, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
+                    context.arc(center.x, center.y, 10, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
                     context.lineTo(center.x, center.y); // the triangle is downwards.
                     context.fillStyle = pac_color; //color if the pacman
                     context.fill();
@@ -310,6 +329,7 @@ function Draw() {
                     context.arc(center.x, center.y - 6, 2, 0, 2 * Math.PI); // circle eye
                     context.fillStyle = "black"; //color
                     context.fill(); 
+                    context.closePath();
                 }
                 	
             } else if (board[i][j] === 1) {
@@ -385,7 +405,10 @@ function randomSettings() {
     document.getElementById("monsterNum").value = Math.floor(Math.random() * 3) + 1; 
     var foodN = Math.floor(Math.random() * 30) + 50;
     document.getElementById("foodNum").value = foodN;
-    document.getElementById("gameTime").value = Math.floor(Math.random() * 59) + 1;
+    min = Math.ceil(60);
+    max = Math.floor(600);
+    var random =  Math.floor(Math.random() * (max - min + 1)) + min;
+    document.getElementById("gameTime").value = random;
 }
 
 function setKey(e, side){
@@ -405,6 +428,14 @@ function setKeys(){
     keys["down"] = document.getElementById("down").value
 
     showSettings();
+}
+
+function setFoodColors() {
+    fivePts = document.getElementById("5pts").value;
+    fifPts = document.getElementById("15pts").value;
+    TFPts = document.getElementById("25pts").value;
+
+    showSettings(); 
 }
 
   function chooseButtons(){
@@ -481,4 +512,16 @@ function setKeys(){
       board[22][2] = 4;
       board[22][3] = 4;
 
+  }
+
+  function chooseFoodColor(){
+    $("#content").show();
+    $("#Menu").show();
+    $("#foodColor").show();
+    $("#Settings").hide();
+    $("#Register").hide();
+    $("#Login").hide();
+    $("#Welcome").hide();
+    $("#AboutUs").hide();
+	$("#Game").hide();
   }
