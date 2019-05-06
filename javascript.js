@@ -12,6 +12,7 @@ var currentUser;
 var monsNum; 
 var foodN;
 var time;
+var keys = {};
 var users = [];
 
 $(document).ready(function(){
@@ -29,10 +30,23 @@ $(document).ready(function(){
         e.preventDefault();
         login();
     });
+    document.getElementById("Settings").addEventListener("submit", function(e) {
+        e.preventDefault();
+        showGame();
+    });
+    document.getElementById("buttons").addEventListener("submit", function(e) {
+        e.preventDefault();
+        setKeys();
+    });
     aUser = new Object();
     aUser.username = "a";
     aUser.password = "a";
     users[0] = aUser;
+
+    keys["left"] = 'ArrowLeft'
+    keys["right"] = 'ArrowRight'
+    keys["up"] = 'ArrowUp'
+    keys["down"] = 'ArrowDown'
 });
 
 function showAbout() {
@@ -47,10 +61,10 @@ function showWelcome(){
     $("#AboutUs").hide();
 }
 
-
 function showLogin(){
     $("#content").show();
     $("#Login").show();
+    $("#buttons").hide();
     $("#Menu").hide();
     $("#Game").hide();
     $("#Welcome").hide();
@@ -61,8 +75,9 @@ function showLogin(){
 
 function showRegister(){
     $("#content").show();
-    $("#Menu").hide();
     $("#Register").show();
+    $("#Menu").hide();
+    $("#buttons").hide();
     $("#Game").hide();
     $("#Login").hide();
     $("#Welcome").hide();
@@ -75,10 +90,12 @@ function showGame(){
     $("#Menu").show();
     $("#Game").show();
     $("#Register").hide();
+    $("#buttons").hide();
     $("#Login").hide();
     $("#Welcome").hide();
     $("#AboutUs").hide();
-	$("#Settings").hide();
+    $("#Settings").hide();
+    Start();
 }
 
 function showSettings(){
@@ -86,6 +103,7 @@ function showSettings(){
     $("#Menu").show();
     $("#Settings").show();
     $("#Register").hide();
+    $("#buttons").hide();
     $("#Login").hide();
     $("#Welcome").hide();
     $("#AboutUs").hide();
@@ -138,13 +156,13 @@ function Start() {
     score = 0;
     pac_color = "yellow";
     var cnt = 100;
-    var food_remain = 50;
-    var pacman_remain = 1;
+    var food_remain = document.getElementById("foodNum").value;
+    var pacman_remain = 1; // needs to be changed when get eaten by a monster
     start_time = new Date();
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < 13; i++) {
         board[i] = new Array();
         //put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
-        for (var j = 0; j < 10; j++) {
+        for (var j = 0; j < 13; j++) {
             //place border
             if ((i === 3 && j === 3) || (i === 3 && j === 4) || (i === 3 && j === 5) || (i === 6 && j === 1) || (i === 6 && j === 2)) {
                 board[i][j] = 4;
@@ -211,6 +229,35 @@ function GetKeyPressed() {
     }
 }
 
+
+function findRandomEmptyCell(board) {
+    var i = Math.floor((Math.random() * 9) + 1);
+    var j = Math.floor((Math.random() * 9) + 1);
+    while (board[i][j] !== 0) {
+        i = Math.floor((Math.random() * 9) + 1);
+        j = Math.floor((Math.random() * 9) + 1);
+    }
+    return [i, j];
+}
+
+/**
+ * @return {number}
+ */
+function GetKeyPressed() {
+    if (keysDown[keys["up"]]) {
+        return 1;
+    }
+    if (keysDown[keys["down"]]) {
+        return 2;
+    }
+    if (keysDown[keys["left"]]) {
+        return 3;
+    }
+    if (keysDown[keys["right"]]) {
+        return 4;
+    }
+}
+
 function Draw() {
     context.clearRect(0, 0, canvas.width, canvas.height); //clean board
     lblScore.value = score;
@@ -223,75 +270,80 @@ function Draw() {
     //context.lineTo(center.x, center.y);
     //context.fillStyle = monsterColor; //color 
     //context.fill();
-    for (var i = 0; i < 10; i++) {
-        for (var j = 0; j < 10; j++) {
+    for (var i = 0; i < 13; i++) {
+        for (var j = 0; j < 13; j++) {
             var center = new Object();
-            center.x = i * 60 + 30;
-            center.y = j * 60 + 30;
+            center.x = i * 70 + 35;
+            center.y = j * 45 + 23;
             if (board[i][j] === 2) {
                 //should put the first drawing of the pacman
+                //if up
                 if(GetKeyPressed() == 1)
 				{
-				context.beginPath();
-                context.arc(center.x, center.y, 30, -0.35 * Math.PI, 1.35 * Math.PI); // half circle
-                context.lineTo(center.x, center.y);
-                context.fillStyle = pac_color; //color 
-                context.fill();
-                context.beginPath();
-                context.arc(center.x + 14, center.y - 10, 5, 0, 2 * Math.PI); // circle
-                context.fillStyle = "black"; //color 
-                context.fill();
+				    context.beginPath();
+                    context.arc(center.x, center.y, 20, -0.35 * Math.PI, 1.35 * Math.PI); // half circle
+                    context.lineTo(center.x, center.y);
+                    context.fillStyle = pac_color; //color 
+                    context.fill();
+                    context.beginPath();
+                    context.arc(center.x - 10, center.y, 3, 0, 2 * Math.PI); // circle
+                    context.fillStyle = "black"; //color 
+                    context.fill();
                 }
+                //if down
                 else if(GetKeyPressed() == 2)
                 {
                 context.beginPath();
-                context.arc(center.x, center.y, 30, 0.65 * Math.PI, 2.35 * Math.PI); // half circle
+                context.arc(center.x, center.y, 20, 0.65 * Math.PI, 2.35 * Math.PI); // half circle
                 context.lineTo(center.x, center.y); // the triangle
                 context.fillStyle = pac_color; //color if the pacman
                 context.fill();
                 context.beginPath();
-                context.arc(center.x + 10, center.y - 3, 5, 0, 2 * Math.PI); // circle eye
+                context.arc(center.x - 10, center.y, 3, 0, 2 * Math.PI); // circle eye
                 context.fillStyle = "black"; //color
                 context.fill();
                 }
+                //if left
                 else if(GetKeyPressed() == 3)
                 {
                 context.beginPath();
-                context.arc(center.x, center.y, 30, 1.15* Math.PI, 2.85 * Math.PI,false);                context.lineTo(center.x, center.y); // the triangle
+                context.arc(center.x, center.y, 20, 1.15* Math.PI, 2.85 * Math.PI,false);                
+                context.lineTo(center.x, center.y); // the triangle
                 context.fillStyle = pac_color; //color if the pacman
                 context.fill();
                 context.beginPath();
-                context.arc(center.x + 5, center.y - 15, 5, 0, 2 * Math.PI); // circle eye
+                context.arc(center.x, center.y - 10, 3, 0, 2 * Math.PI); // circle eye
                 context.fillStyle = "black"; //color
                 context.fill();
                 }
+                //if right
                 else if(GetKeyPressed() == 4)
                 {
                     context.beginPath();
-                    context.arc(center.x, center.y, 30, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
+                    context.arc(center.x, center.y, 20, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
                     context.lineTo(center.x, center.y); // the triangle is downwards.
                     context.fillStyle = pac_color; //color if the pacman
                     context.fill();
                     context.beginPath();
-                    context.arc(center.x + 5, center.y - 15, 5, 0, 2 * Math.PI); // circle eye
+                    context.arc(center.x, center.y - 10, 3, 0, 2 * Math.PI); // circle eye
                     context.fillStyle = "black"; //color
                     context.fill(); 
                 }
                 	
             } else if (board[i][j] === 1) {
                 context.beginPath();
-                context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
+                context.arc(center.x, center.y, 10, 0, 2 * Math.PI); // circle
                 context.fillStyle = "black"; //color of the food 
                 context.fill();
             } else if (board[i][j] === 4) { //handles the walls 
                 context.beginPath();
-                context.rect(center.x - 30, center.y - 30, 60, 60);
+                context.rect(center.x - 35, center.y - 23, 70, 45);
                 context.fillStyle = "grey"; //color
                 context.fill();
             } 
             else if (board[i][j] === 0) {
                 context.beginPath();
-                context.rect(center.x - 30, center.y - 30, 60, 60);
+                context.rect(center.x - 35, center.y - 23, 70, 45);
                 context.fillStyle = "rgba(19, 35, 47, 0)"; //color when there aint nothing
                 context.fill();
             }
@@ -339,9 +391,40 @@ function UpdatePosition() {
     }
 }
 
-function randomizeSetts() {
+function randomSettings() {
     document.getElementById("monsterNum").value = Math.floor(Math.random() * 3) + 1; 
     var foodN = Math.floor(Math.random() * 30) + 50;
     document.getElementById("foodNum").value = foodN;
     document.getElementById("gameTime").value = Math.floor(Math.random() * 59) + 1;
 }
+
+function setKey(e, side){
+    e.preventDefault();
+    if(e.code == 'Backspace') {
+        document.getElementById(side).value = "";
+    }else {
+        document.getElementById(side).value = e.code;
+    }
+}
+
+function setKeys(){
+    keys = {};
+    keys["left"] = document.getElementById("left").value
+    keys["right"] = document.getElementById("right").value
+    keys["up"] = document.getElementById("up").value
+    keys["down"] = document.getElementById("down").value
+
+    showSettings();
+}
+
+  function chooseButtons(){
+    $("#content").show();
+    $("#Menu").show();
+    $("#buttons").show();
+    $("#Settings").hide();
+    $("#Register").hide();
+    $("#Login").hide();
+    $("#Welcome").hide();
+    $("#AboutUs").hide();
+	$("#Game").hide();
+  }
