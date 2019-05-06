@@ -166,15 +166,15 @@ function Start() {
     var food_remain = numOfFood;
     var pacman_remain = 1; // needs to be changed when get eaten by a monster
     start_time = new Date();
-    for (var i = 0; i < 13; i++) {
-        board[i] = new Array();
+    for (var i = 0; i < 24; i++) {
+        board[i] = new Array(13);
+    }
+    placeBorder();
+    for (var i = 0; i < 24; i++) {
         //put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
         for (var j = 0; j < 13; j++) {
             //place border
-            if ((i === 3 && j === 3) || (i === 3 && j === 4) || (i === 3 && j === 5) || (i === 6 && j === 1) || (i === 6 && j === 2)) {
-                board[i][j] = 4;
-                //place food
-            } else {
+            if (board[i][j] != 4) {
                 var randomNum = Math.random();
                 if (randomNum <= 1.0 * food_remain / cnt) {
                     food_remain--;
@@ -192,6 +192,7 @@ function Start() {
             }
         }
     }
+    shape.side = 4;
     while (food_remain > 0) {
         var emptyCell = findRandomEmptyCell(board);
         board[emptyCell[0]][emptyCell[1]] = 1;
@@ -216,24 +217,6 @@ function findRandomEmptyCell(board) {
         j = Math.floor((Math.random() * 9) + 1);
     }
     return [i, j];
-}
-
-/**
- * @return {number}
- */
-function GetKeyPressed() {
-    if (keysDown['ArrowUp']) {
-        return 1;
-    }
-    if (keysDown['ArrowDown']) {
-        return 2;
-    }
-    if (keysDown['ArrowLeft']) {
-        return 3;
-    }
-    if (keysDown['ArrowRight']) {
-        return 4;
-    }
 }
 
 
@@ -269,23 +252,15 @@ function Draw() {
     context.clearRect(0, 0, canvas.width, canvas.height); //clean board
     lblScore.value = score;
     lblTime.value = time_elapsed;
-    //var startPoint = new Object();
-    //startPoint.x = i * 60 + 30;
-    //startPoint.y = j * 60 + 30;
-    //context.beginPath();
-    //context.arc(center.x, center.y, 30, -0.35 * Math.PI, 1.35 * Math.PI); // half circle
-    //context.lineTo(center.x, center.y);
-    //context.fillStyle = monsterColor; //color 
-    //context.fill();
-    for (var i = 0; i < 13; i++) {
+    for (var i = 0; i < 24; i++) {
         for (var j = 0; j < 13; j++) {
             var center = new Object();
-            center.x = i * 50 + 25;
-            center.y = j * 26 + 13;
+            center.x = i * 27 + 13;
+            center.y = j * 27 + 13;
             if (board[i][j] === 2) {
                 //should put the first drawing of the pacman
                 //if up
-                if(GetKeyPressed() == 1)
+                if(shape.side == 1)
 				{
 				    context.beginPath();
                     context.arc(center.x, center.y, 12, -0.35 * Math.PI, 1.35 * Math.PI); // half circle
@@ -293,12 +268,12 @@ function Draw() {
                     context.fillStyle = pac_color; //color 
                     context.fill();
                     context.beginPath();
-                    context.arc(center.x - 6, center.y, 3, 0, 2 * Math.PI); // circle
+                    context.arc(center.x - 6, center.y, 2, 0, 2 * Math.PI); // circle
                     context.fillStyle = "black"; //color 
                     context.fill();
                 }
                 //if down
-                else if(GetKeyPressed() == 2)
+                else if(shape.side == 2)
                 {
                 context.beginPath();
                 context.arc(center.x, center.y, 12, 0.65 * Math.PI, 2.35 * Math.PI); // half circle
@@ -306,12 +281,12 @@ function Draw() {
                 context.fillStyle = pac_color; //color if the pacman
                 context.fill();
                 context.beginPath();
-                context.arc(center.x - 6, center.y, 3, 0, 2 * Math.PI); // circle eye
+                context.arc(center.x - 6, center.y, 2, 0, 2 * Math.PI); // circle eye
                 context.fillStyle = "black"; //color
                 context.fill();
                 }
                 //if left
-                else if(GetKeyPressed() == 3)
+                else if(shape.side == 3)
                 {
                 context.beginPath();
                 context.arc(center.x, center.y, 12, 1.15* Math.PI, 2.85 * Math.PI,false);                
@@ -319,12 +294,12 @@ function Draw() {
                 context.fillStyle = pac_color; //color if the pacman
                 context.fill();
                 context.beginPath();
-                context.arc(center.x, center.y - 6, 3, 0, 2 * Math.PI); // circle eye
+                context.arc(center.x, center.y - 6, 2, 0, 2 * Math.PI); // circle eye
                 context.fillStyle = "black"; //color
                 context.fill();
                 }
                 //if right
-                else if(GetKeyPressed() == 4)
+                else if(shape.side == 4)
                 {
                     context.beginPath();
                     context.arc(center.x, center.y, 12, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
@@ -332,7 +307,7 @@ function Draw() {
                     context.fillStyle = pac_color; //color if the pacman
                     context.fill();
                     context.beginPath();
-                    context.arc(center.x, center.y - 6, 3, 0, 2 * Math.PI); // circle eye
+                    context.arc(center.x, center.y - 6, 2, 0, 2 * Math.PI); // circle eye
                     context.fillStyle = "black"; //color
                     context.fill(); 
                 }
@@ -340,17 +315,17 @@ function Draw() {
             } else if (board[i][j] === 1) {
                 context.beginPath();
                 context.arc(center.x, center.y, 7, 0, 2 * Math.PI); // circle
-                context.fillStyle = "black"; //color of the food 
+                context.fillStyle = "red"; //color of the food 
                 context.fill();
             } else if (board[i][j] === 4) { //handles the walls 
                 context.beginPath();
-                context.rect(center.x - 35, center.y - 18, 70, 35);
+                context.rect(center.x - 13, center.y - 13, 27, 27);
                 context.fillStyle = "grey"; //color
                 context.fill();
             } 
             else if (board[i][j] === 0) {
                 context.beginPath();
-                context.rect(center.x - 35, center.y - 18, 70, 35);
+                context.rect(center.x - 13, center.y - 13, 27, 27);
                 context.fillStyle = "rgba(19, 35, 47, 0)"; //color when there aint nothing
                 context.fill();
             }
@@ -361,24 +336,32 @@ function Draw() {
 function UpdatePosition() {
     board[shape.i][shape.j] = 0;
     var x = GetKeyPressed();
+    //up
     if (x === 1) {
         if (shape.j > 0 && board[shape.i][shape.j - 1] !== 4) {
             shape.j--;
+            shape.side = 1;
         }
     }
+    //down
     if (x === 2) {
-        if (shape.j < 9 && board[shape.i][shape.j + 1] !== 4) {
+        if (shape.j < 12 && board[shape.i][shape.j + 1] !== 4) {
             shape.j++;
+            shape.side = 2;
         }
     }
+    //left
     if (x === 3) {
         if (shape.i > 0 && board[shape.i - 1][shape.j] !== 4) {
             shape.i--;
+            shape.side = 3;
         }
     }
+    //right
     if (x === 4) {
-        if (shape.i < 9 && board[shape.i + 1][shape.j] !== 4) {
+        if (shape.i < 23 && board[shape.i + 1][shape.j] !== 4) {
             shape.i++;
+            shape.side = 4;
         }
     }
     if (board[shape.i][shape.j] === 1) {
@@ -434,4 +417,68 @@ function setKeys(){
     $("#Welcome").hide();
     $("#AboutUs").hide();
 	$("#Game").hide();
+  }
+
+  function placeBorder(){
+      board[1][4] = 4;
+      board[1][5] = 4;
+      board[1][6] = 4;
+      board[1][7] = 4;
+
+      board[2][3] = 4;
+      board[2][8] = 4;
+
+      board[3][2] = 4;
+      board[3][9] = 4;
+
+      board[4][2] = 4;
+      board[4][9] = 4;
+
+      board[5][2] = 4;
+      board[5][9] = 4;
+
+      board[9][3] = 4;
+      board[9][4] = 4;
+      board[9][6] = 4;
+      board[9][7] = 4;
+      board[9][8] = 4;
+
+      board[10][2] = 4;
+      board[10][5] = 4;
+      board[10][9] = 4;
+
+      board[11][2] = 4;
+      board[11][5] = 4;
+      board[11][9] = 4;
+
+      board[12][3] = 4;
+      board[12][4] = 4;
+      board[12][6] = 4;
+      board[12][9] = 4;
+
+      board[13][7] = 4;
+      board[13][8] = 4;
+
+      board[14][5] = 4;
+      board[14][6] = 4;
+      board[14][8] = 4;
+
+      board[15][9] = 4;
+
+      board[18][2] = 4;
+      board[18][3] = 4;
+
+      board[19][4] = 4;
+
+      board[20][5] = 4;
+      board[20][6] = 4;
+      board[20][7] = 4;
+      board[20][8] = 4;
+      board[20][9] = 4;
+
+      board[21][4] = 4;
+
+      board[22][2] = 4;
+      board[22][3] = 4;
+
   }
