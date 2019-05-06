@@ -166,7 +166,6 @@ li a:hover {
   }
 
   canvas{
-    background-color: black;
     position:relative;
     top: 20px;
     width: 100%;
@@ -176,6 +175,17 @@ li a:hover {
   }
 
   #chooseButtons{
+    position: relative;
+    background-color: rgba(49, 114, 163, 0.9);
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
+
+  #chooseFoodC{
     position: relative;
     background-color: rgba(49, 114, 163, 0.9);
     border: none;

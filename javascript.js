@@ -14,6 +14,13 @@ var numOfFood;
 var gameTime;
 var keys = {};
 var users = [];
+var fivePts;
+var TFPs;
+var fifPts; 
+//ahuzim
+var sixsty; 
+var thirty;
+var ten;
 
 $(document).ready(function(){
     $("#Welcome").show();
@@ -38,6 +45,11 @@ $(document).ready(function(){
         e.preventDefault();
         setKeys();
     });
+    document.getElementById("foodColor").addEventListener("submit", function(e) {
+        e.preventDefault();
+        setFoodColors();
+    });
+
     aUser = new Object();
     aUser.username = "a";
     aUser.password = "a";
@@ -65,6 +77,7 @@ function showLogin(){
     $("#content").show();
     $("#Login").show();
     $("#buttons").hide();
+    $("#foodColor").hide();
     $("#Menu").hide();
     $("#Game").hide();
     $("#Welcome").hide();
@@ -103,6 +116,7 @@ function showSettings(){
     $("#Settings").show();
     $("#Register").hide();
     $("#buttons").hide();
+    $("#foodColor").hide(); 
     $("#Login").hide();
     $("#Welcome").hide();
     $("#AboutUs").hide();
@@ -218,24 +232,6 @@ function findRandomEmptyCell(board) {
     return [i, j];
 }
 
-/**
- * @return {number}
- */
-function GetKeyPressed() {
-    if (keysDown['ArrowUp']) {
-        return 1;
-    }
-    if (keysDown['ArrowDown']) {
-        return 2;
-    }
-    if (keysDown['ArrowLeft']) {
-        return 3;
-    }
-    if (keysDown['ArrowRight']) {
-        return 4;
-    }
-}
-
 
 function findRandomEmptyCell(board) {
     var i = Math.floor((Math.random() * 9) + 1);
@@ -269,14 +265,6 @@ function Draw() {
     context.clearRect(0, 0, canvas.width, canvas.height); //clean board
     lblScore.value = score;
     lblTime.value = time_elapsed;
-    //var startPoint = new Object();
-    //startPoint.x = i * 60 + 30;
-    //startPoint.y = j * 60 + 30;
-    //context.beginPath();
-    //context.arc(center.x, center.y, 30, -0.35 * Math.PI, 1.35 * Math.PI); // half circle
-    //context.lineTo(center.x, center.y);
-    //context.fillStyle = monsterColor; //color 
-    //context.fill();
     for (var i = 0; i < 13; i++) {
         for (var j = 0; j < 13; j++) {
             var center = new Object();
@@ -288,7 +276,7 @@ function Draw() {
                 if(GetKeyPressed() == 1)
 				{
 				    context.beginPath();
-                    context.arc(center.x, center.y, 12, -0.35 * Math.PI, 1.35 * Math.PI); // half circle
+                    context.arc(center.x, center.y, 10, -0.35 * Math.PI, 1.35 * Math.PI); // half circle
                     context.lineTo(center.x, center.y);
                     context.fillStyle = pac_color; //color 
                     context.fill();
@@ -296,12 +284,13 @@ function Draw() {
                     context.arc(center.x - 6, center.y, 3, 0, 2 * Math.PI); // circle
                     context.fillStyle = "black"; //color 
                     context.fill();
+                    context.closePath();
                 }
                 //if down
                 else if(GetKeyPressed() == 2)
                 {
                 context.beginPath();
-                context.arc(center.x, center.y, 12, 0.65 * Math.PI, 2.35 * Math.PI); // half circle
+                context.arc(center.x, center.y, 10, 0.65 * Math.PI, 2.35 * Math.PI); // half circle
                 context.lineTo(center.x, center.y); // the triangle
                 context.fillStyle = pac_color; //color if the pacman
                 context.fill();
@@ -309,12 +298,13 @@ function Draw() {
                 context.arc(center.x - 6, center.y, 3, 0, 2 * Math.PI); // circle eye
                 context.fillStyle = "black"; //color
                 context.fill();
+                context.closePath();
                 }
                 //if left
                 else if(GetKeyPressed() == 3)
                 {
                 context.beginPath();
-                context.arc(center.x, center.y, 12, 1.15* Math.PI, 2.85 * Math.PI,false);                
+                context.arc(center.x, center.y, 10, 1.15* Math.PI, 2.85 * Math.PI,false);                
                 context.lineTo(center.x, center.y); // the triangle
                 context.fillStyle = pac_color; //color if the pacman
                 context.fill();
@@ -322,12 +312,13 @@ function Draw() {
                 context.arc(center.x, center.y - 6, 3, 0, 2 * Math.PI); // circle eye
                 context.fillStyle = "black"; //color
                 context.fill();
+                context.closePath();
                 }
                 //if right
                 else if(GetKeyPressed() == 4)
                 {
                     context.beginPath();
-                    context.arc(center.x, center.y, 12, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
+                    context.arc(center.x, center.y, 10, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
                     context.lineTo(center.x, center.y); // the triangle is downwards.
                     context.fillStyle = pac_color; //color if the pacman
                     context.fill();
@@ -335,12 +326,13 @@ function Draw() {
                     context.arc(center.x, center.y - 6, 3, 0, 2 * Math.PI); // circle eye
                     context.fillStyle = "black"; //color
                     context.fill(); 
+                    context.closePath();
                 }
                 	
             } else if (board[i][j] === 1) {
                 context.beginPath();
                 context.arc(center.x, center.y, 7, 0, 2 * Math.PI); // circle
-                context.fillStyle = "black"; //color of the food 
+                context.fillStyle = foodCol; //color of the food 
                 context.fill();
             } else if (board[i][j] === 4) { //handles the walls 
                 context.beginPath();
@@ -402,7 +394,10 @@ function randomSettings() {
     document.getElementById("monsterNum").value = Math.floor(Math.random() * 3) + 1; 
     var foodN = Math.floor(Math.random() * 30) + 50;
     document.getElementById("foodNum").value = foodN;
-    document.getElementById("gameTime").value = Math.floor(Math.random() * 59) + 1;
+    min = Math.ceil(60);
+    max = Math.floor(600);
+    var random =  Math.floor(Math.random() * (max - min + 1)) + min;
+    document.getElementById("gameTime").value = random;
 }
 
 function setKey(e, side){
@@ -424,6 +419,14 @@ function setKeys(){
     showSettings();
 }
 
+function setFoodColors() {
+    fivePts = document.getElementById("5pts").value;
+    fifPts = document.getElementById("15pts").value;
+    TFPts = document.getElementById("25pts").value;
+
+    showSettings(); 
+}
+
   function chooseButtons(){
     $("#content").show();
     $("#Menu").show();
@@ -435,3 +438,22 @@ function setKeys(){
     $("#AboutUs").hide();
 	$("#Game").hide();
   }
+
+  function chooseFoodC(){
+    $("#content").show();
+    $("#Menu").show();
+    $("#foodColor").show();
+    $("#Settings").hide();
+    $("#Register").hide();
+    $("#Login").hide();
+    $("#Welcome").hide();
+    $("#AboutUs").hide();
+	$("#Game").hide();
+  }
+
+function foodColorsPer() {
+ var food = document.getElementById("foodNum");
+ sixsty = Math.ceil(food * 0.6); 
+ thirty = Math.ceil(food * 0.3);
+ ten = food - sixsty - thirty; 
+}

@@ -100,7 +100,9 @@
             <br>
             <br>
             <button id="chooseButtons" style="vertical-align:middle" onclick="chooseButtons()"
-                <span>Choose Game Buttons<span /></button>
+                <span>Choose Game Buttons<span /></button><br>
+            <button id="chooseFoodC" style="vertical-align:middle" onclick="chooseFoodC()"
+                <span>Choose Food Colors<span /></button>
             </center>
             <br>
             <form class="form" target="index.htm" action="" method="post">
@@ -147,8 +149,31 @@
                             onkeydown="setKey(event, id)" />
                     </label>
                     <label>
-                        <button id="start" type="submit" class="button" style="vertical-align:middle" onclick="Start()"
+                        <button id="start" type="submit" class="button" style="vertical-align:middle"
                             <span>Set Buttons<span /></button>
+                        </button>
+                    </label>
+                </center>
+            </form>
+        </Div>
+
+        
+        <Div id="foodColor">
+            <form class="form" target="index.htm" action="" method="post">
+                <center>
+                    <p id="foodCTitle" style="style: bold; color: white;">Choose the Food Color: </p><br>
+                    <label>
+                        <span>5 points</span><input id="5pts" type="color" value="#ff0000">
+                    </label><br><br>
+                    <label>
+                        <span>15 points</span><input id="15pts" type="color" value="#ff0000">
+                    </label><br><br>
+                    <label>
+                        <span>25 points</span><input id="25pts" type="color" value="#ff0000">
+                    </label><br><br>
+                    <label>
+                        <button id="setFoodColors" type="submit" class="button" style="vertical-align:middle"
+                            <span>Set Colors!<span /></button>
                         </button>
                     </label>
                 </center>
@@ -180,7 +205,7 @@
     </Div>
 
     <footer>
-        <p>This game was created by Chen and Yarin<br></p>
+        <p>This game was created by Chen and Yarin <br></p>
         <p>Contact information: <a href="mailto:chenfi@post.bgu.ac.il">
                 Chen Finkelstein</a>
             <a href="mailto:yarinab@post.bgu.ac.il">
