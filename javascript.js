@@ -15,8 +15,10 @@ var gameTime;
 var keys = {};
 var users = [];
 var monsters = [];
+var bonus = new Object(); 
 var fivePts;
 var escapeBtn; 
+var lastMove; 
 var TFPts;
 var fifPts;
 var modal;
@@ -214,6 +216,7 @@ function Start() {
     placeFood();
     placePacMan();
     placeMonsters();
+    placeBonus(); 
     for (var i = 0; i < 24; i++) {
         for (var j = 0; j < 13; j++) {
             if (!board[i][j]) {
@@ -357,6 +360,7 @@ function Draw() {
         }
     }
     drawMonsters();
+    drawBonus(); 
 }
 
 function UpdatePosition() {
@@ -399,6 +403,7 @@ function UpdatePosition() {
     }
     board[pacmanPosition.i][pacmanPosition.j] = 2;
     repositionMonsters();
+    repositionBonus();
     var currentTime = new Date();
     time_elapsed = (currentTime - start_time) / 1000;
     if (score >= 20 && time_elapsed <= 10) {
@@ -409,6 +414,57 @@ function UpdatePosition() {
         window.alert("Game completed");
     } else {
         Draw();
+    }
+}
+
+function repositionBonus() {
+    var x = bonus.i;
+    var y = bonus.j;
+    var flag = true; 
+    var rand;
+    //1 for left, 2 for right, 3 for up, 4 for down
+    while(flag) {
+        rand = Math.floor((Math.random()*4)+1); 
+        if(rand == 1) {
+            if(x != 0) {
+            if(board[x-1][y] != 4) {
+                bonus.i = x-1;
+                flag = false; 
+            }
+            else
+                continue;
+            }
+        }
+        else if(rand == 2) {
+            if(x != 23) {
+                if(board[x+1][y] != 4) {
+                    bonus.i = x+1;
+                    flag = false; 
+                }
+                else
+                    continue;
+            }
+        } 
+        else if(rand == 3) {
+            if(y != 0) {
+                if(board[x][y-1]) {
+                    bonus.j = y-1;
+                    flag = false; 
+                }
+                else
+                    continue;
+            }
+        } 
+        else if(rand == 4) {
+            if(y != 12) {
+                if(board[x][y+1] != 4) {
+                    bonus.j = y+1;
+                    flag = false; 
+                }
+                else
+                    continue;
+            }
+        } 
     }
 }
 
@@ -499,6 +555,16 @@ function drawMonsters(){
         center.y = monsters[i].j * 27 + 13;
         context.drawImage(img, center.x - 13, center.y - 13, 27, 27);
     }
+}
+
+function drawBonus(){
+    var image = ["photos/bonus.png"];
+    var img = new Image();
+    img.src = image;
+    var center = new Object();
+    center.x = bonus.i * 27 + 13;
+    center.y = bonus.j * 27 + 13;
+    context.drawImage(img, center.x - 13, center.y - 13, 27, 27);
 }
 
 function randomSettings() {
@@ -701,4 +767,10 @@ function placeMonsters() {
             //board[0][12] = 9;
         }
     }
+}
+
+function placeBonus() {
+    //23,12
+    bonus.i = 23; 
+    bonus.j = 12; 
 }
