@@ -21,7 +21,8 @@ $(function() {
         },
         RegisterPass: {
           required: true,
-          minlength: 8
+          minlength: 8,
+          lettersAndNumbers: true,
         },
         birthdate: {
             required: true, 
@@ -71,3 +72,7 @@ $(function() {
   jQuery.validator.addMethod("lettersonly", function(value, element) {
 	return this.optional(element) || /^[a-z]+$/i.test(value);
 }, "Name can contain letters only");
+
+jQuery.validator.addMethod("lettersAndNumbers", function(value, element) {
+	return this.optional(element) || /(?=.*\d)(?=.*[a-zA-Z]).{8,}/i.test(value);
+}, "Password must contain atleast one letter and one number");

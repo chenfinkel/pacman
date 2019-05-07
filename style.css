@@ -1,6 +1,16 @@
 *, *:before, *:after {
     box-sizing: border-box;
   }
+
+  @font-face {
+    font-family: komika;
+    src: url(fonts/komika.ttf);
+    }
+
+    @font-face {
+      font-family: komika;
+      src: url(fonts/SansSara.ttf);
+      }
   
   html {
     overflow-y: scroll;
@@ -13,23 +23,10 @@ body {
     background-color: #c1bdba;
 }
 
-  #Menu {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    position: fixed;
-    top: 50px;
-    bottom: 50px;
-    left: 0;
-    width: 200 px;
-    list-style-type: none;
-    overflow: hidden;
-    background-color: #00ac8f;
-    z-index: 1;
-  }
 
 header {
     list-style-type: none;
+    opacity: 50%;
     margin: 0;
     padding: 0;
     position: fixed;
@@ -38,7 +35,7 @@ header {
     height: 50px;
     list-style-type: none;
     overflow: hidden;
-    background-color:#006699;
+    background-color: black;
     z-index: 1;
     display: flex;
     align-items:center;
@@ -54,7 +51,7 @@ footer {
     height: 50px;
     list-style-type: none;
     overflow: hidden;
-    background-color:#006699;
+    background-color:black;
     z-index: 1;
     display: flex;
     align-items:center;
@@ -124,7 +121,7 @@ li a:hover {
 
 .reg-form {
   width: 100%;
-    padding: 6px 10px;
+    padding: 4px 10px;
     margin: 8px 0;
     box-sizing: border-box;
   }
@@ -261,4 +258,34 @@ li a:hover {
 
   .details{
     color: #ffffff;
+  }
+
+  .sidenav {
+    height: 100%;
+    width: 200px;
+    position: fixed;
+    z-index: 1;
+    top: 50px;
+    bottom: 50px;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    padding-top: 20px;
+  }
+  
+  .sidenav a {
+    padding: 6px 6px 6px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+  }
+  
+  .sidenav a:hover {
+    color: #f1f1f1;
+  }
+  
+  @media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
   }

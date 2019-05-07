@@ -16,8 +16,17 @@
         <p>C&amp;Y Pacman Chen Finkelstein Yarin Abergel</p>
     </header>
 
+    <div id="Menu" class="sidenav">
+            <a href="#" onclick="showWelcome()">Welcome</a>
+            <a href="#" onclick="showLogin()">Login</a>
+            <a href="#" onclick="showRegister()">Register</a>
+            <a href="#" onclick="showSettings()">Settings</a>
+            <a href="#" onclick="showModal()">About</a>
+    </div>      
 
-    <div id="Menu" class="Top">
+
+
+    <!--<div id="Menu" class="Top">
         <div class="table">
             <ul id="horizontal-list" style="list-style-type: none; margin: 0; padding: 0;">
                 <li><a id="welcome" onclick="showWelcome()">Welcome</a></li>
@@ -26,7 +35,7 @@
                 <li><a id="about" onclick="showModal()">About</a></li>
             </ul>
         </div>
-    </div>
+    </div>-->
 
 <!-- The Modal -->
     <div id="myModal" class="modal">
@@ -50,39 +59,39 @@
 </div>
     <div id="content">
         <Div id="Register">
-            <form class="form" action="index.htm" method="post" id="registration" name="registration">
-                <center>
-                <label class="form-label">
-                    <input type="text" id="firstName" name="firstName" class="reg-form" placeholder="First Name"/>
-                </label>
-                <label class="form-label">
-                    <input type="text" id="lastName" name="lastName" class="reg-form" placeholder="Last Name">
-                </label>
-                <label class="form-label">
-                    <input type="text" id="RegisterUser" name="RegisterUser" class="reg-form" placeholder="Username"/>
-                </label>
-                <label class="form-label">
-                    <input type="password" id="RegisterPass" name="RegisterPass" class="reg-form" placeholder="Password"/>
-                </label>
-                <label class="form-label">
-                        <input type="email" id="mail" name="mail" class="reg-form" placeholder="Email"/>
-                    </label>
-                <label class="form-label">
-                    <input type="date" id="birthdate" name="birthdate" class="reg-form" placeholder="Birth Date"/>
-                </label><br />
-                <label>
-                    <center>
-                        <input type="submit" class="button" value="Register" style="vertical-align:middle" />
-                        <button class="button" style="vertical-align:middle"
-                            onclick="back(event)"><span>Back</span></button>
+                <form class="form" action="index.htm" method="post" id="registerForm" name="registration">
+                        <center>
+                        <label class="form-label">
+                            <input type="text" id="firstName" name="firstName" class="reg-form" placeholder="First Name"/>
+                        </label>
+                        <label class="form-label">
+                            <input type="text" id="lastName" name="lastName" class="reg-form" placeholder="Last Name">
+                        </label>
+                        <label class="form-label">
+                            <input type="text" id="RegisterUser" name="RegisterUser" class="reg-form" placeholder="Username"/>
+                        </label>
+                        <label class="form-label">
+                            <input type="password" id="RegisterPass" name="RegisterPass" class="reg-form" placeholder="Password"/>
+                        </label>
+                        <label class="form-label">
+                                <input type="email" id="mail" name="mail" class="reg-form" placeholder="Email"/>
+                            </label>
+                        <label class="form-label">
+                            <input type="date" id="birthdate" name="birthdate" class="reg-form" placeholder="Birth Date"/>
+                        </label><br />
+                        <label style="bottom: 0;">
+                            <center>
+                                <input type="submit" class="button" value="Register" style="vertical-align:middle" />
+                                <button class="button" style="vertical-align:middle"
+                                    onclick="back(event)"><span>Back</span></button>
+                            </center>
+                        </label>
                     </center>
-                </label>
-            </center>
-            </form>
+                    </form>
         </Div>
 
         <Div id="Login">
-            <form class="form" target="index.htm" action="" method="post">
+            <form class="form" target="index.htm" action="" method="post" id="loginForm">
                 <center><label>
                         <span>User Name:</span><br><input type="text" id="LoginUser" class="login-form" />
                     </label><br />
@@ -98,16 +107,14 @@
         </Div>
         <Div id="Settings">
             <center>
-                <p id="settingsTitle">Settings</p>
-            <br>
-            <br>
+                <p id="settingsTitle" style="font-family:komika; font-size: 50pt; margin: 0;">Settings</p>
             <button id="chooseButtons" style="vertical-align:middle" onclick="chooseButtons()"
                 <span>Choose Game Buttons<span /></button><br>
             <button id="chooseFoodC" style="vertical-align:middle" onclick="chooseFoodColor()"
                 <span>Choose Food Colors<span /></button>
             </center>
             <br>
-            <form class="form" target="index.htm" action="" method="post" name="settings">
+            <form class="form" target="index.htm" action="" method="post" name="settings" id="settingsForm">
                 <center>
                     <label>
                         <span>Choose number of Monsters:</span><input type="text" class="other-form" id="monsterNum"
@@ -132,7 +139,7 @@
             </form>
         </Div>
         <Div id="buttons">
-            <form class="form" target="index.htm" action="" method="post">
+            <form class="form" target="index.htm" action="" method="post" id="buttonsForm">
                 <center>
                     <label>
                         <span>Left:</span><input type="text" class="other-form" id="left" placeholder="Press key"
@@ -161,7 +168,7 @@
 
         
         <Div id="foodColor">
-            <form class="form" target="index.htm" action="" method="post">
+            <form class="form" target="index.htm" action="" method="post" id="foodForm">
                 <center>
                     <p id="foodCTitle" style="color: white;">Choose the Food Color: </p><br>
                     <label>
