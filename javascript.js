@@ -24,6 +24,7 @@ var lastMove;
 var TFPts;
 var fifPts;
 var modal;
+var pacmanSound; 
 var span = document.getElementsByClassName("close")[0];
 
 $(document).ready(function () {
@@ -34,6 +35,7 @@ $(document).ready(function () {
     canvas = document.getElementById("MyCanvas");
     context = canvas.getContext("2d");
     modal = document.getElementById('myModal');
+    pacmanSound = document.getElementById("sound"); 
     document.getElementById("Register").addEventListener("submit", function (e) {
         e.preventDefault();
         register();
@@ -70,6 +72,7 @@ $(document).ready(function () {
     aUser.username = "a";
     aUser.password = "a";
     users[0] = aUser;
+
 
     keys["left"] = 'ArrowLeft'
     keys["right"] = 'ArrowRight'
@@ -200,10 +203,14 @@ function saveSettings() {
     numOfFood = document.getElementById("foodNum").value;
     numOfMonsters = document.getElementById("monsterNum").value;
     gameTime = document.getElementById("gameTime").value;
-    showGame()
+    showGame();
     Start();
 }
 
+function StartNew() {
+    window.clearInterval(interval);
+    Start();
+}
 
 function Start() {
     board = new Array();
@@ -459,22 +466,23 @@ function UpdatePosition() {
     lastTime = currentTime;
     timeLeft = timeLeft - time_elapsed;
     checkEaten();
-    if (timeLeft <= 0) {
-        if (score < 150) {
+    if (timeLeft <= 0 && lives > 0) {
+        if (score < 150 )  {
             youCanDoBetter();
         } else {
             Win();
         }
     } else if (lives === 0) {
         Lose();
-    } else {
+    }
+     else {
         Draw();
     }
 }
 
 function youCanDoBetter(){
         window.clearInterval(interval);
-        window.alert("You can do better!");
+        window.alert("You can do better!" + score + "");
 }
 
 function Win(){

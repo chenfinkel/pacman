@@ -183,6 +183,7 @@
         </Div>
         <div id="Game">
                 <div id="gameDetails">
+                    <embed loop="true" id="sound" src="pacmanSound.mp3" hidden="true"></embed>
                     <center>
                     <label>
                         <span>Score:  </span><label id="lblScore"></label>
@@ -191,6 +192,7 @@
                         <span>Time Remaining:  </span><label id="lblTime"></label>
                     </label>
                     <label>Lives:  </label><label id="lifeLeft"></label>
+                    <button id="startNew" onclick="StartNew()" class="button">Start New Game!</button>
                 </center>
                 </div>
                 <canvas id="MyCanvas" width="660" height="360"></canvas>         
