@@ -24,7 +24,7 @@ var lastMove;
 var TFPts;
 var fifPts;
 var modal;
-var pacmanSound; 
+var pacmanSound = new Audio('pacmanSound.mp3'); 
 var span = document.getElementsByClassName("close")[0];
 
 $(document).ready(function () {
@@ -35,7 +35,6 @@ $(document).ready(function () {
     canvas = document.getElementById("MyCanvas");
     context = canvas.getContext("2d");
     modal = document.getElementById('myModal');
-    pacmanSound = document.getElementById("sound"); 
     document.getElementById("Register").addEventListener("submit", function (e) {
         e.preventDefault();
         register();
@@ -92,10 +91,16 @@ window.onclick = function (event) {
 }
 
 function showModal() {
+    window.clearInterval(interval);
+    pacmanSound.pause();
+    pacmanSound.currentTime = 0;
     modal.style.display = "block";
 }
 
 function showWelcome() {
+    window.clearInterval(interval);
+    pacmanSound.pause();
+    pacmanSound.currentTime = 0;
     $("#Welcome").show();
     $("#Menu").hide();
     $("#content").hide();
@@ -103,6 +108,9 @@ function showWelcome() {
 }
 
 function showLogin() {
+    window.clearInterval(interval);
+    pacmanSound.pause();
+    pacmanSound.currentTime = 0;
     $("#content").show();
     $("#Login").show();
     $("#buttons").hide();
@@ -116,6 +124,9 @@ function showLogin() {
 }
 
 function showRegister() {
+    window.clearInterval(interval);
+    pacmanSound.pause();
+    pacmanSound.currentTime = 0;
     $("#content").show();
     $("#Register").show();
     $("#Menu").hide();
@@ -129,6 +140,9 @@ function showRegister() {
 }
 
 function showGame() {
+    window.clearInterval(interval);
+    pacmanSound.pause();
+    pacmanSound.currentTime = 0;
     $("#content").show();
     $("#Menu").show();
     $("#Game").show();
@@ -142,6 +156,9 @@ function showGame() {
 }
 
 function showSettings() {
+    window.clearInterval(interval);
+    pacmanSound.pause();
+    pacmanSound.currentTime = 0;
     $("#content").show();
     $("#Menu").show();
     $("#Settings").show();
@@ -208,11 +225,14 @@ function saveSettings() {
 }
 
 function StartNew() {
+    pacmanSound.pause();
+    pacmanSound.currentTime = 0;
     window.clearInterval(interval);
     Start();
 }
 
 function Start() {
+    pacmanSound.play();
     board = new Array();
     lives = 3;
     score = 0;
@@ -271,7 +291,6 @@ function Draw() {
     document.getElementById("lblScore").innerHTML = score + " ";
     document.getElementById("lblTime").innerHTML = Math.round(timeLeft) + " ";
     document.getElementById("lifeLeft").innerHTML = lives;
-    //drawLife();
     for (var i = 0; i < 24; i++) {
         for (var j = 0; j < 13; j++) {
             var center = new Object();
@@ -455,9 +474,11 @@ function UpdatePosition() {
         score += 25;
     }
     board[pacmanPosition.i][pacmanPosition.j] = 2;
-    if (countInterval === 3){
+    if (countInterval === 4){
         repositionMonsters();
-        repositionBonus();
+        if (bonus.i != -1) {
+            repositionBonus();
+        }
         countInterval = 0;
     }
     
@@ -466,6 +487,7 @@ function UpdatePosition() {
     lastTime = currentTime;
     timeLeft = timeLeft - time_elapsed;
     checkEaten();
+    checkBonus();
     if (timeLeft <= 0 && lives > 0) {
         if (score < 150 )  {
             youCanDoBetter();
@@ -480,17 +502,31 @@ function UpdatePosition() {
     }
 }
 
+function checkBonus(){
+    if ((pacmanPosition.i == bonus.i) && (pacmanPosition.j == bonus.j)){
+        score = score + 50;
+        bonus.i = -1;
+        bonus.j = -1;
+    }
+}
+
 function youCanDoBetter(){
+    pacmanSound.pause();
+    pacmanSound.currentTime = 0;
         window.clearInterval(interval);
         window.alert("You can do better!" + score + "");
 }
 
 function Win(){
+    pacmanSound.pause();
+    pacmanSound.currentTime = 0;
     window.clearInterval(interval);
     window.alert("We have a winner!!!");
 }
 
 function Lose(){
+    pacmanSound.pause();
+    pacmanSound.currentTime = 0;
     window.clearInterval(interval);
     window.alert("You lost!");
 }
@@ -641,6 +677,7 @@ function drawMonsters(){
 }
 
 function drawBonus(){
+    if (bonus.i != -1 ) {
     var image = ["photos/bonus.png"];
     var img = new Image();
     img.src = image;
@@ -648,6 +685,7 @@ function drawBonus(){
     center.x = bonus.i * 27 + 13;
     center.y = bonus.j * 27 + 13;
     context.drawImage(img, center.x - 13, center.y - 13, 27, 27);
+}
 }
 
 function randomSettings() {
