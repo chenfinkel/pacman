@@ -13,6 +13,7 @@ var numOfMonsters;
 var numOfFood;
 var gameTime;
 var keys = {};
+var food_remain; 
 var users = [];
 var monsters = [];
 var countInterval;
@@ -35,6 +36,7 @@ $(document).ready(function () {
     canvas = document.getElementById("MyCanvas");
     context = canvas.getContext("2d");
     modal = document.getElementById('myModal');
+    foodN = document.getElementById("foodNum");
     document.getElementById("Register").addEventListener("submit", function (e) {
         e.preventDefault();
         register();
@@ -218,6 +220,7 @@ function login() {
 
 function saveSettings() {
     numOfFood = document.getElementById("foodNum").value;
+    food_remain = numOfFood;
     numOfMonsters = document.getElementById("monsterNum").value;
     gameTime = document.getElementById("gameTime").value;
     showGame();
@@ -236,6 +239,7 @@ function Start() {
     board = new Array();
     lives = 3;
     score = 0;
+    food_remain = numOfFood; 
     pac_color = "yellow";
     countInterval = 0;
     lastTime = new Date();
@@ -288,6 +292,7 @@ function GetKeyPressed() {
 function Draw() {
     context.clearRect(0, 0, canvas.width, canvas.height);//clean board
     context.fillRect(0, 0, canvas.width, canvas.height);
+    document.getElementById("lblUser").innerHTML = currentUser + " ";
     document.getElementById("lblScore").innerHTML = score + " ";
     document.getElementById("lblTime").innerHTML = Math.round(timeLeft) + " ";
     document.getElementById("lifeLeft").innerHTML = lives;
@@ -467,12 +472,15 @@ function UpdatePosition() {
         }
     }
     if (board[pacmanPosition.i][pacmanPosition.j] === 1) {
-        score++;
+        score += 5;
     } else if (board[pacmanPosition.i][pacmanPosition.j] === 5) {
         score += 15;
     } else if (board[pacmanPosition.i][pacmanPosition.j] === 6) {
         score += 25;
     }
+    console.log(food_remain);
+    
+
     board[pacmanPosition.i][pacmanPosition.j] = 2;
     if (countInterval === 4){
         repositionMonsters();
@@ -488,6 +496,20 @@ function UpdatePosition() {
     timeLeft = timeLeft - time_elapsed;
     checkEaten();
     checkBonus();
+
+    notdone = true
+    for (var i = 0; i < 24 && notdone; i++) {
+        for (var j = 0; j < 13 && notdone; j++) {
+            if(board[i][j] == 1 || board[i][j] == 5 || board[i][j] == 6){
+                 notdone = false;
+            }
+        }
+    }
+
+    if(notdone){
+        Win();
+    }
+
     if (timeLeft <= 0 && lives > 0) {
         if (score < 150 )  {
             youCanDoBetter();
@@ -496,8 +518,7 @@ function UpdatePosition() {
         }
     } else if (lives === 0) {
         Lose();
-    }
-     else {
+    } else {
         Draw();
     }
 }
@@ -699,6 +720,10 @@ function randomSettings() {
     fivePts = getRandomColor();
     fifPts = getRandomColor();
     TFPts = getRandomColor();
+    keys["left"] = 'ArrowLeft';
+    keys["right"] = 'ArrowRight';
+    keys["up"] = 'ArrowUp';
+    keys["down"] = 'ArrowDown';
 }
 
 function getRandomColor() {
