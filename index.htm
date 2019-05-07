@@ -23,30 +23,31 @@
                 <li><a id="welcome" onclick="showWelcome()">Welcome</a></li>
                 <li><a id="login" onclick="showLogin()">Login</a></li>
                 <li><a id="register" onclick="showRegister()">Register</a></li>
-                <li><a id="about" onclick="showAbout()">About</a></li>
+                <li><a id="about" onclick="showModal()">About</a></li>
             </ul>
         </div>
     </div>
 
-    <Div id="AboutUs">
-        <dialog id="About">
-            <p>
-                <hr />
-                Created By:
-                <br />
-                Yarin Abergel 208379248
-                <br />
-                Chen Finkelstein 203118864
-                <hr />
-                In this assignment we used jquery 1.12.4
-                <hr />
-                The most difficult part in this assignment was to understand how to use jquery and javascript.
-                <hr />
-            </p>
-            <button type="button" onclick="closeabout()" id="Abuttom" value="close">close</button>
-        </dialog>
-    </Div>
+<!-- The Modal -->
+    <div id="myModal" class="modal">
 
+        <!-- Modal content -->
+        <div class="modal-content">
+        <span onClick="closeModal()" class="close">&times;</span>
+        <p><hr />
+            Created By:
+            <br />
+            Yarin Abergel 208379248
+            <br />
+            Chen Finkelstein 203118864
+            <hr />
+            In this assignment we used jquery 1.12.4
+            <hr />
+            The most difficult part in this assignment was to understand how to use jquery and javascript.
+            <hr /></p>
+    </div>
+
+</div>
     <div id="content">
         <Div id="Register">
             <form class="form" action="index.htm" method="post" name="registration">

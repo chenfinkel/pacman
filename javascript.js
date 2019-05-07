@@ -16,8 +16,11 @@ var keys = {};
 var users = [];
 var monsters = [];
 var fivePts;
+var escapeBtn; 
 var TFPts;
 var fifPts;
+var modal;
+var span = document.getElementsByClassName("close")[0];
 
 $(document).ready(function () {
     $("#Welcome").show();
@@ -26,6 +29,7 @@ $(document).ready(function () {
     $("#AboutUs").hide();
     canvas = document.getElementById("MyCanvas");
     context = canvas.getContext("2d");
+    modal = document.getElementById('myModal');
     document.getElementById("Register").addEventListener("submit", function (e) {
         e.preventDefault();
         register();
@@ -46,6 +50,17 @@ $(document).ready(function () {
         e.preventDefault();
         setFoodColors();
     });
+    $('body').keydown(function (escapeBtn) {
+        if (escapeBtn.keyCode == 27) 
+            closeModal(); 
+    });
+    escapeBtn = $.Event("keydown", {
+        keyCode: 27
+    });
+
+    $('#escape').click(function () {
+        $("body").trigger(escapeBtn);
+    });
 
     aUser = new Object();
     aUser.username = "a";
@@ -58,9 +73,19 @@ $(document).ready(function () {
     keys["down"] = 'ArrowDown'
 });
 
-function showAbout() {
-    $("#AboutUs").show();
-    document.getElementById("About").showModal();
+function closeModal() {
+    modal.style.display = "none";
+}
+
+window.onclick = function (event) {
+    
+    if (event.target == modal) {
+        closeModal();
+    }
+}
+
+function showModal() {
+    modal.style.display = "block";
 }
 
 function showWelcome() {
