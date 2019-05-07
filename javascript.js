@@ -17,9 +17,14 @@ var users = [];
 var monsters = [];
 var countInterval;
 var lives;
+var bonus = new Object(); 
 var fivePts;
+var escapeBtn; 
+var lastMove; 
 var TFPts;
 var fifPts;
+var modal;
+var span = document.getElementsByClassName("close")[0];
 
 $(document).ready(function () {
     $("#Welcome").show();
@@ -28,6 +33,7 @@ $(document).ready(function () {
     $("#AboutUs").hide();
     canvas = document.getElementById("MyCanvas");
     context = canvas.getContext("2d");
+    modal = document.getElementById('myModal');
     document.getElementById("Register").addEventListener("submit", function (e) {
         e.preventDefault();
         register();
@@ -48,6 +54,17 @@ $(document).ready(function () {
         e.preventDefault();
         setFoodColors();
     });
+    $('body').keydown(function (escapeBtn) {
+        if (escapeBtn.keyCode == 27) 
+            closeModal(); 
+    });
+    escapeBtn = $.Event("keydown", {
+        keyCode: 27
+    });
+
+    $('#escape').click(function () {
+        $("body").trigger(escapeBtn);
+    });
 
     aUser = new Object();
     aUser.username = "a";
@@ -60,9 +77,19 @@ $(document).ready(function () {
     keys["down"] = 'ArrowDown'
 });
 
-function showAbout() {
-    $("#AboutUs").show();
-    document.getElementById("About").showModal();
+function closeModal() {
+    modal.style.display = "none";
+}
+
+window.onclick = function (event) {
+    
+    if (event.target == modal) {
+        closeModal();
+    }
+}
+
+function showModal() {
+    modal.style.display = "block";
 }
 
 function showWelcome() {
@@ -194,6 +221,7 @@ function Start() {
     placeFood();
     placePacMan();
     placeMonsters();
+    placeBonus(); 
     for (var i = 0; i < 24; i++) {
         for (var j = 0; j < 13; j++) {
             if (!board[i][j]) {
@@ -240,10 +268,7 @@ function Draw() {
             var center = new Object();
             center.x = i * 27 + 13;
             center.y = j * 27 + 13;
-            context.beginPath();
-            context.rect(center.x - 13, center.y - 13, 27, 27);
-            context.fillStyle = "black";
-            context.fill();
+            fillBlack(i,j,center);
             if (board[i][j] === 2) {
                 //should put the first drawing of the pacman
                 //if up
@@ -333,31 +358,39 @@ function Draw() {
                 context.fill();
             }
             else if (board[i][j] === 0 || board[i][j] === -1) {
-                if (i == 23 && j != 12) {
-                    context.beginPath();
-                    context.rect(center.x - 13, center.y - 13, 39, 27);
-                    context.fillStyle = "black"; //color when there aint nothing
-                    context.fill();
-                } else if (i != 23 && j == 12) {
-                    context.beginPath();
-                    context.rect(center.x - 13, center.y - 13, 27, 36);
-                    context.fillStyle = "black"; //color when there aint nothing
-                    context.fill();
-                } else if (i == 23 && j == 12) {
-                    context.beginPath();
-                    context.rect(center.x - 13, center.y - 13, 39, 36);
-                    context.fillStyle = "black"; //color when there aint nothing
-                    context.fill();
-                } else {
                     context.beginPath();
                     context.rect(center.x - 13, center.y - 13, 27, 27);
                     context.fillStyle = "black"; //color when there aint nothing
                     context.fill();
-                }
             }
         }
     }
     drawMonsters();
+    drawBonus(); 
+}
+
+function fillBlack(i,j, center){
+    if (i == 23 && j != 12) {
+        context.beginPath();
+        context.rect(center.x - 13, center.y - 13, 39, 27);
+        context.fillStyle = "black"; //color when there aint nothing
+        context.fill();
+    } else if (i != 23 && j == 12) {
+        context.beginPath();
+        context.rect(center.x - 13, center.y - 13, 27, 36);
+        context.fillStyle = "black"; //color when there aint nothing
+        context.fill();
+    } else if (i == 23 && j == 12) {
+        context.beginPath();
+        context.rect(center.x - 13, center.y - 13, 39, 36);
+        context.fillStyle = "black"; //color when there aint nothing
+        context.fill();
+    } else {
+        context.beginPath();
+        context.rect(center.x - 13, center.y - 13, 27, 27);
+        context.fillStyle = "black"; //color when there aint nothing
+        context.fill();
+    }
 }
 
 function UpdatePosition() {
@@ -402,6 +435,7 @@ function UpdatePosition() {
     board[pacmanPosition.i][pacmanPosition.j] = 2;
     if (countInterval === 3){
         repositionMonsters();
+        repositionBonus();
         countInterval = 0;
     }
     
@@ -448,6 +482,57 @@ function checkEaten(){
             }
             placeMonsters();
         }
+    }
+}
+
+function repositionBonus() {
+    var x = bonus.i;
+    var y = bonus.j;
+    var flag = true; 
+    var rand;
+    //1 for left, 2 for right, 3 for up, 4 for down
+    while(flag) {
+        rand = Math.floor((Math.random()*4)+1); 
+        if(rand == 1) {
+            if(x != 0) {
+            if(board[x-1][y] != 4) {
+                bonus.i = x-1;
+                flag = false; 
+            }
+            else
+                continue;
+            }
+        }
+        else if(rand == 2) {
+            if(x != 23) {
+                if(board[x+1][y] != 4) {
+                    bonus.i = x+1;
+                    flag = false; 
+                }
+                else
+                    continue;
+            }
+        } 
+        else if(rand == 3) {
+            if(y != 0) {
+                if(board[x][y-1]) {
+                    bonus.j = y-1;
+                    flag = false; 
+                }
+                else
+                    continue;
+            }
+        } 
+        else if(rand == 4) {
+            if(y != 12) {
+                if(board[x][y+1] != 4) {
+                    bonus.j = y+1;
+                    flag = false; 
+                }
+                else
+                    continue;
+            }
+        } 
     }
 }
 
@@ -530,6 +615,16 @@ function drawMonsters(){
         center.y = monsters[i].j * 27 + 13;
         context.drawImage(img, center.x - 13, center.y - 13, 27, 27);
     }
+}
+
+function drawBonus(){
+    var image = ["photos/bonus.png"];
+    var img = new Image();
+    img.src = image;
+    var center = new Object();
+    center.x = bonus.i * 27 + 13;
+    center.y = bonus.j * 27 + 13;
+    context.drawImage(img, center.x - 13, center.y - 13, 27, 27);
 }
 
 function randomSettings() {
@@ -759,4 +854,10 @@ function placeForbidden(){
     board[12][7] = -1;
     board[12][8] = -1;
 
+}
+
+function placeBonus() {
+    //23,12
+    bonus.i = 23; 
+    bonus.j = 12;
 }
