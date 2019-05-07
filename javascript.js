@@ -4,8 +4,8 @@ var pacmanPosition = new Object();
 var board;
 var score;
 var pac_color;
-var start_time;
-var time_elapsed;
+var lastTime;
+var timeLeft;
 var interval;
 var monsterColor = "white";
 var currentUser;
@@ -15,6 +15,8 @@ var gameTime;
 var keys = {};
 var users = [];
 var monsters = [];
+var countInterval;
+var lives;
 var fivePts;
 var TFPts;
 var fifPts;
@@ -178,14 +180,17 @@ function saveSettings() {
 
 function Start() {
     board = new Array();
+    lives = 3;
     score = 0;
     pac_color = "yellow";
-    var food_remain = numOfFood;
-    start_time = new Date();
+    countInterval = 0;
+    lastTime = new Date();
+    timeLeft = gameTime;
     for (var i = 0; i < 24; i++) {
         board[i] = new Array(13);
     }
     placeBorder();
+    placeForbidden();
     placeFood();
     placePacMan();
     placeMonsters();
@@ -204,7 +209,7 @@ function Start() {
     addEventListener("keyup", function (e) {
         keysDown[e.code] = false;
     }, false);
-    interval = setInterval(UpdatePosition, 150);
+    interval = setInterval(UpdatePosition, 50);
 }
 
 /**
@@ -228,13 +233,17 @@ function GetKeyPressed() {
 function Draw() {
     context.clearRect(0, 0, canvas.width, canvas.height);//clean board
     context.fillRect(0, 0, canvas.width, canvas.height);
-    lblScore.value = score;
-    lblTime.value = time_elapsed;
+    document.getElementById("lblScore").innerHTML = score;
+    document.getElementById("lblTime").innerHTML = Math.round(timeLeft);
     for (var i = 0; i < 24; i++) {
         for (var j = 0; j < 13; j++) {
             var center = new Object();
             center.x = i * 27 + 13;
             center.y = j * 27 + 13;
+            context.beginPath();
+            context.rect(center.x - 13, center.y - 13, 27, 27);
+            context.fillStyle = "black";
+            context.fill();
             if (board[i][j] === 2) {
                 //should put the first drawing of the pacman
                 //if up
@@ -323,11 +332,28 @@ function Draw() {
                 context.fillStyle = "grey"; //color
                 context.fill();
             }
-            else if (board[i][j] === 0) {
-                context.beginPath();
-                context.rect(center.x - 13, center.y - 13, 27, 27);
-                context.fillStyle = "black"; //color when there aint nothing
-                context.fill();
+            else if (board[i][j] === 0 || board[i][j] === -1) {
+                if (i == 23 && j != 12) {
+                    context.beginPath();
+                    context.rect(center.x - 13, center.y - 13, 39, 27);
+                    context.fillStyle = "black"; //color when there aint nothing
+                    context.fill();
+                } else if (i != 23 && j == 12) {
+                    context.beginPath();
+                    context.rect(center.x - 13, center.y - 13, 27, 36);
+                    context.fillStyle = "black"; //color when there aint nothing
+                    context.fill();
+                } else if (i == 23 && j == 12) {
+                    context.beginPath();
+                    context.rect(center.x - 13, center.y - 13, 39, 36);
+                    context.fillStyle = "black"; //color when there aint nothing
+                    context.fill();
+                } else {
+                    context.beginPath();
+                    context.rect(center.x - 13, center.y - 13, 27, 27);
+                    context.fillStyle = "black"; //color when there aint nothing
+                    context.fill();
+                }
             }
         }
     }
@@ -335,6 +361,7 @@ function Draw() {
 }
 
 function UpdatePosition() {
+    countInterval++;
     board[pacmanPosition.i][pacmanPosition.j] = 0;
     var x = GetKeyPressed();
     //up
@@ -373,17 +400,54 @@ function UpdatePosition() {
         score += 25;
     }
     board[pacmanPosition.i][pacmanPosition.j] = 2;
-    repositionMonsters();
-    var currentTime = new Date();
-    time_elapsed = (currentTime - start_time) / 1000;
-    if (score >= 20 && time_elapsed <= 10) {
-        pac_color = "green";
+    if (countInterval === 3){
+        repositionMonsters();
+        countInterval = 0;
     }
-    if (score === 50) {
-        window.clearInterval(interval);
-        window.alert("Game completed");
+    
+    var currentTime = new Date();
+    var time_elapsed = (currentTime - lastTime) / 1000;
+    lastTime = currentTime;
+    timeLeft = timeLeft - time_elapsed;
+    checkEaten();
+    if (timeLeft <= 0) {
+        if (score < 150) {
+            youCanDoBetter();
+        } else {
+            Win();
+        }
+    } else if (lives === 0) {
+        Lose();
     } else {
         Draw();
+    }
+}
+
+function youCanDoBetter(){
+        window.clearInterval(interval);
+        window.alert("You can do better!");
+}
+
+function Win(){
+    window.clearInterval(interval);
+    window.alert("We have a winner!!!");
+}
+
+function Lose(){
+    window.clearInterval(interval);
+    window.alert("You lost!");
+}
+
+function checkEaten(){
+    for (var i = 0; i < numOfMonsters; i++) {
+        if ((monsters[i].i === pacmanPosition.i) && (monsters[i].j === pacmanPosition.j)){
+            lives--;
+            score = score - 10;
+            if (score < 0){
+                score = 0;
+            }
+            placeMonsters();
+        }
     }
 }
 
@@ -430,33 +494,25 @@ function repositionMonsters() {
         } else {
             //if pacman is beneath
             if (verticalDistance < 0 && y+1 < 13 && board[x][y+1] != 4){
-                //board[x][y+1] = 7+i;
                 monsters[i].j = y+1;
             //if pacman is above
             } else if (verticalDistance > 0 && y-1 >= 0 && board[x][y-1] != 4){
-                //board[x][y-1] = 7+i;
                 monsters[i].j = y-1;
             //if pacman on the right
             } else if (horizontalDistance < 0 && x+1 < 24 && board[x+1][y] != 4){
-                //board[x+1][y] = 7+i;
                 monsters[i].i = x+1;
             //if pacman on the left
             } else if (horizontalDistance > 0 && x-1 >= 0 && board[x-1][y] != 4){
-                //board[x-1][y] = 7+i;
                 monsters[i].i = x-1;
             //if pacman is beneath
             } else {
                 if (y+1 < 13 && board[x][y+1] != 4){
-                    //board[x][y+1] = 7+i;
                     monsters[i].j = y+1;
                 } else if (y-1 >= 0 && board[x][y-1] != 4) {
-                    //board[x][y-1] = 7+i;
                     monsters[i].j = y-1;
                 } else if (x+1 < 24 && board[x+1][y] != 4) {
-                    //board[x+1][y] = 7+i;
                     monsters[i].i = x+1;
                 } else if (x-1 >= 0 && board[x-1][y] != 4){
-                    //board[x-1][y] = 7+i;
                     monsters[i].i = x-1;
                 } 
             }
@@ -619,12 +675,24 @@ function placePacMan() {
         var randRow = Math.floor(Math.random() * 13);
         var randCol = Math.floor(Math.random() * 24);
         if (board[randCol][randRow] != 4 && board[randCol][randRow] != 1 &&
-            board[randCol][randRow] != 5 && board[randCol][randRow] != 6) {
+            board[randCol][randRow] != 5 && board[randCol][randRow] != 6 && 
+            board[randCol][randRow] != -1 && !atCorners(randRow, randCol)) {
             board[randCol][randRow] = 2;
             pacmanPosition.i = randCol;
             pacmanPosition.j = randRow;
             placed = true;
         }
+    }
+}
+
+function atCorners(row, col){
+    if ((row === 0 && col ===0) ||
+            (row === 0 && col === 23) ||
+                (row === 12 && col == 0) ||
+                    (row === 12 && col === 23)) {
+                        return true;
+    } else {
+        return false;
     }
 }
 
@@ -641,10 +709,10 @@ function placeFood() {
         while (food > 0) {
             var randRow = Math.floor(Math.random() * 13);
             var randCol = Math.floor(Math.random() * 24);
-            if (board[randCol][randRow] != 4) {
-                if (index == 1) {
+            if (board[randCol][randRow] != 4 && board[randCol][randRow] != -1) {
+                if (index === 1) {
                     board[randCol][randRow] = 1;
-                } else if (index == 2) {
+                } else if (index === 2) {
                     board[randCol][randRow] = 5;
                 } else {
                     board[randCol][randRow] = 6;
@@ -661,19 +729,34 @@ function placeMonsters() {
     monster1.i = 0;
     monster1.j = 0;
     monsters[0] = monster1;
-    //board[0][0] = 7;
     if (numOfMonsters > 1) {
         var monster2 = new Object();
         monster2.i = 23;
         monster2.j = 0;
         monsters[1] = monster2;
-        //board[23][0] = 8;
         if (numOfMonsters > 2) {
             var monster3 = new Object();
             monster3.i = 0;
             monster3.j = 12;
             monsters[2] = monster3;
-            //board[0][12] = 9;
         }
     }
+}
+
+function placeForbidden(){
+    board[10][3] = -1;
+    board[10][4] = -1;
+    board[10][6] = -1;
+    board[10][7] = -1;
+    board[10][8] = -1;
+    
+    board[11][3] = -1;
+    board[11][4] = -1;
+    board[11][6] = -1;
+    board[11][7] = -1;
+    board[11][8] = -1;
+
+    board[12][7] = -1;
+    board[12][8] = -1;
+
 }
