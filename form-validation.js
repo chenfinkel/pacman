@@ -1,13 +1,9 @@
 // Wait for the DOM to be ready
 $(function() {
-    // Initialize form validation on the registration form.
-    // It has the name attribute "registration"
+
     $("form[name='registration']").validate({
       // Specify validation rules
       rules: {
-        // The key name on the left side is the name attribute
-        // of an input field. Validation rules are defined
-        // on the right side
         firstName: {
             required: true,
             lettersonly: true
@@ -18,8 +14,6 @@ $(function() {
         },
         mail: {
           required: true,
-          // Specify that email should be validated
-          // by the built-in "email" rule
           email: true
         },
         RegisterUser:{
@@ -59,7 +53,7 @@ $(function() {
       // Specify validation error messages
       messages: {
         monsters: {
-            required: "Please enter your first name",
+            required: "Please enter number of monsters",
             range: "Number of monsters must be between 1-3"
         },
         food:  {

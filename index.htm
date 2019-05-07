@@ -50,26 +50,25 @@
 </div>
     <div id="content">
         <Div id="Register">
-            <form class="form" action="index.htm" method="post" name="registration">
+            <form class="form" action="index.htm" method="post" id="registration" name="registration">
                 <center>
-                <label>
-                    <span>First Name:</span><br><input type="text" id="firstName" name="firstName" class="reg-form" />
-                </label><br />
-                <label>
-                    <span>Last Name:</span><br><input type="text" id="lastName" name="lastName" class="reg-form">
-                </label><br />
-                <label>
-                    <span>Email:</span><br><input type="email" id="mail" name="mail" class="reg-form" />
-                </label><br />
-                <label>
-                    <span>User Name:</span><br><input type="text" id="RegisterUser" name="RegisterUser" class="reg-form" />
-                </label><br />
-                <label>
-                    <span>Password:</span><br><input type="password" id="RegisterPass" name="RegisterPass"
-                        class="reg-form" />
-                </label><br />
-                <label>
-                    <span>Birth Date:</span><br><input type="date" id="birthdate" name="birthdate" class="reg-form" />
+                <label class="form-label">
+                    <input type="text" id="firstName" name="firstName" class="reg-form" placeholder="First Name"/>
+                </label>
+                <label class="form-label">
+                    <input type="text" id="lastName" name="lastName" class="reg-form" placeholder="Last Name">
+                </label>
+                <label class="form-label">
+                    <input type="text" id="RegisterUser" name="RegisterUser" class="reg-form" placeholder="Username"/>
+                </label>
+                <label class="form-label">
+                    <input type="password" id="RegisterPass" name="RegisterPass" class="reg-form" placeholder="Password"/>
+                </label>
+                <label class="form-label">
+                        <input type="email" id="mail" name="mail" class="reg-form" placeholder="Email"/>
+                    </label>
+                <label class="form-label">
+                    <input type="date" id="birthdate" name="birthdate" class="reg-form" placeholder="Birth Date"/>
                 </label><br />
                 <label>
                     <center>
@@ -184,14 +183,15 @@
         </Div>
         <div id="Game">
                 <div id="gameDetails">
+                    <center>
                     <label>
-                        <span>Score:</span><label id="lblScore"></label>
+                        <span>Score:  </span><label id="lblScore"></label>
                     </label>
                     <label>
-                        <span>Time:</span><label id="lblTime"></label>
+                        <span>Time Remaining:  </span><label id="lblTime"></label>
                     </label>
-                    <label>Lives:</label>
-                    <label id="lifeLeft"></label>
+                    <label>Lives:  </label><label id="lifeLeft"></label>
+                </center>
                 </div>
                 <canvas id="MyCanvas" width="660" height="360"></canvas>         
         </div>

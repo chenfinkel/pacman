@@ -123,9 +123,9 @@ li a:hover {
 }
 
 .reg-form {
+  width: 100%;
     padding: 6px 10px;
     margin: 8px 0;
-    size: 30;
     box-sizing: border-box;
   }
 
@@ -205,7 +205,8 @@ li a:hover {
 
   #gameDetails{
       padding: 5px;
-      background-color: #00ac8f;
+      background-color: black;
+      box-shadow: 0 0 8px rgba(44, 112, 143, 0.3);
       position: relative;
       top: 0;
       height: 60px;
@@ -256,4 +257,8 @@ li a:hover {
     color: black;
     text-decoration: none;
     cursor: pointer;
+  }
+
+  .details{
+    color: #ffffff;
   }

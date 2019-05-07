@@ -27,7 +27,7 @@ var modal;
 var span = document.getElementsByClassName("close")[0];
 
 $(document).ready(function () {
-    $("#Welcome").show();
+    $("#Welcome").hide().fadeIn(800);
     $("#content").hide();
     $("#Menu").hide();
     $("#AboutUs").hide();
@@ -261,8 +261,10 @@ function GetKeyPressed() {
 function Draw() {
     context.clearRect(0, 0, canvas.width, canvas.height);//clean board
     context.fillRect(0, 0, canvas.width, canvas.height);
-    document.getElementById("lblScore").innerHTML = score;
-    document.getElementById("lblTime").innerHTML = Math.round(timeLeft);
+    document.getElementById("lblScore").innerHTML = score + " ";
+    document.getElementById("lblTime").innerHTML = Math.round(timeLeft) + " ";
+    document.getElementById("lifeLeft").innerHTML = lives;
+    //drawLife();
     for (var i = 0; i < 24; i++) {
         for (var j = 0; j < 13; j++) {
             var center = new Object();
@@ -367,6 +369,19 @@ function Draw() {
     }
     drawMonsters();
     drawBonus(); 
+}
+
+function drawLife(){
+    var x = 0;
+    var y = 0;
+    var lifeCanvas = document.getElementById("lifeLeft");
+    var ctx = lifeCanvas.getContext("2d");
+    for (var i = 0; i < lives; i++){
+        var img = new Image();
+        img.src = "photos/life.png";
+        ctx.drawImage(img, x, y, 27, 27);
+        x+=30;
+    }
 }
 
 function fillBlack(i,j, center){
@@ -515,7 +530,7 @@ function repositionBonus() {
         } 
         else if(rand == 3) {
             if(y != 0) {
-                if(board[x][y-1]) {
+                if(board[x][y-1] != 4) {
                     bonus.j = y-1;
                     flag = false; 
                 }
