@@ -718,8 +718,11 @@ function randomSettings() {
     var random = Math.floor(Math.random() * (max - min + 1)) + min;
     document.getElementById("gameTime").value = random;
     fivePts = getRandomColor();
+    document.getElementById("5pts").value = fivePts;
     fifPts = getRandomColor();
+    document.getElementById("15pts").value = fifPts;
     TFPts = getRandomColor();
+    document.getElementById("25pts").value = TFPts;
     keys["left"] = 'ArrowLeft';
     keys["right"] = 'ArrowRight';
     keys["up"] = 'ArrowUp';

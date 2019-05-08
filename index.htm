@@ -12,7 +12,7 @@
 <body>
     <header>
         <img id="logo" style="vertical-align:middle" onclick="showWelcome()" src="photos/logo2.png">
-        <p style="color: yellow">C&amp;Y Pacman Chen Finkelstein Yarin Abergel</p>
+        <p style="color: #4CAF50;">C&amp;Y Pacman Chen Finkelstein Yarin Abergel</p>
     </header>
 
     <div id="Menu" class="sidenav">
@@ -166,16 +166,13 @@
         <Div id="foodColor">
             <form class="form" target="index.htm" action="" method="post" id="foodForm">
                 <center>
-                    <p id="foodCTitle" style="color: white;">Choose the Food Color: </p><br>
-                    <label>
-                        <span>5 points</span><input id="5pts" type="color" value="#ff0000">
-                    </label><br><br>
-                    <label>
-                        <span>15 points</span><input id="15pts" type="color" value="#ff0000">
-                    </label><br><br>
-                    <label>
-                        <span>25 points</span><input id="25pts" type="color" value="#ff0000">
-                    </label><br><br>
+                    <p id="foodCTitle" style="color: white; font-family: sara; font-size: 20pt;">Choose the Food Color: </p><br>
+                    <label style="padding: 5px;">5 points </label><input id="5pts" type="color" value="#ff0000">
+                    <br><br>
+                    <label style="padding: 5px;">15 points </label><input id="15pts" type="color" value="#ff0000">
+                    <br><br>
+                    <label style="padding: 5px;">25 points </label><input id="25pts" type="color" value="#ff0000">
+                    <br><br>
                     <label>
                         <button id="setFoodColors" type="submit" class="button" style="vertical-align:middle"
                             <span>Set Colors!<span /></button>
@@ -188,7 +185,7 @@
                 <div id="gameDetails">
                     <center>
                     <label>
-                        <span>Hi:  </span><label id="lblUser"></label>
+                        <span>Hi  </span><label id="lblUser"></label>
                     </label>
                     <label>
                         <span>Score:  </span><label id="lblScore"></label>
@@ -197,7 +194,7 @@
                         <span>Time Remaining:  </span><label id="lblTime"></label>
                     </label>
                     <label>Lives:  </label><label id="lifeLeft"></label>
-                    <button id="startNew" onclick="StartNew()">Start New Game!</button>
+                    <button id="startNew" onclick="StartNew()">New Game</button>
                 </center>
                 </div>
                 <canvas id="MyCanvas" width="660" height="360"></canvas>         
@@ -215,8 +212,8 @@
     </Div>
 
     <footer>
-        <p style="color: yellow">This game was created by Chen and Yarin <br></p>
-        <p style="color: yellow">Contact information: <a href="mailto:chenfi@post.bgu.ac.il">
+        <p style="color: #4CAF50;">This game was created by Chen and Yarin <br></p>
+        <p style="color: #4CAF50;">Contact information: <a href="mailto:chenfi@post.bgu.ac.il">
                 Chen Finkelstein</a>
             <a href="mailto:yarinab@post.bgu.ac.il">
                 Yarin Abergel</a>.</p>
