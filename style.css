@@ -143,13 +143,22 @@ li a:hover {
     box-sizing: border-box;
   }
 
-  .other-form {
+  .settings-form {
     width: 25%;
     padding: 6px 10px;
     margin: 8px 0;
     margin-left: 5px;
     box-sizing: border-box;
     display: inline-block;
+  }
+
+  .other-form {
+    width: 25%;
+    padding: 6px 10px;
+    margin: 8px 0;
+    margin-left: 5px;
+    box-sizing: border-box;
+    display: block;
   }
 
   input[type=text]:focus {

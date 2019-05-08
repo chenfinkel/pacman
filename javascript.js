@@ -1,6 +1,8 @@
 var canvas;
 var context;
 var pacmanPosition = new Object();
+var clock = new Object();
+var pill = new Object();
 var board;
 var score;
 var pac_color;
@@ -250,7 +252,9 @@ function Start() {
     placeBorder();
     placeForbidden();
     placeFood();
-    placePacMan();
+    placeRandom(pacmanPosition, 2);
+    placeRandom(clock, 7);
+    placeRandom(pill, 8);
     placeMonsters();
     placeBonus(); 
     for (var i = 0; i < 24; i++) {
@@ -374,15 +378,11 @@ function Draw() {
                 context.fill();
             } else if (board[i][j] === 7) {
                 var img = new Image();
-                img.src = "photos/purpleGhost.png";
+                img.src = "photos/clock.jpg";
                 context.drawImage(img, center.x - 13, center.y - 13, 27, 27);
-            } else if (board[i][j] === 8) {
+            }else if (board[i][j] === 8) {
                 var img = new Image();
-                img.src = "photos/redGhost.png";
-                context.drawImage(img, center.x - 13, center.y - 13, 27, 27);
-            } else if (board[i][j] === 9) {
-                var img = new Image();
-                img.src = "photos/blueGhost.png";
+                img.src = "photos/pill.png";
                 context.drawImage(img, center.x - 13, center.y - 13, 27, 27);
             } else if (board[i][j] === 4) { //handles the walls 
                 context.beginPath();
@@ -496,7 +496,8 @@ function UpdatePosition() {
     timeLeft = timeLeft - time_elapsed;
     checkEaten();
     checkBonus();
-
+    checkClock();
+    checkPill();
     notdone = true
     for (var i = 0; i < 24 && notdone; i++) {
         for (var j = 0; j < 13 && notdone; j++) {
@@ -520,6 +521,26 @@ function UpdatePosition() {
         Lose();
     } else {
         Draw();
+    }
+}
+
+function checkClock() {
+    if ((pacmanPosition.i == clock.i) && (pacmanPosition.j == clock.j)){
+        timeLeft = timeLeft + 20;
+        board[clock.i][clock.j] = 0;
+        clock.i = -1;
+        clock.j = -1;
+
+    }
+}
+
+function checkPill() {
+    if ((pacmanPosition.i == pill.i) && (pacmanPosition.j == pill.j)){
+        lives++;
+        board[pill.i][pill.j] = 0;
+        pill.i = -1;
+        pill.j = -1;
+
     }
 }
 
@@ -748,11 +769,14 @@ function setKey(e, side) {
 }
 
 function setKeys() {
-    keys = {};
-    keys["left"] = document.getElementById("left").value
-    keys["right"] = document.getElementById("right").value
-    keys["up"] = document.getElementById("up").value
-    keys["down"] = document.getElementById("down").value
+    if (document.getElementById("left").value != "")
+        keys["left"] = document.getElementById("left").value
+    if (document.getElementById("right").value != "")
+        keys["right"] = document.getElementById("right").value
+    if (document.getElementById("up").value != "")
+        keys["up"] = document.getElementById("up").value
+    if (document.getElementById("down").value != "")
+        keys["down"] = document.getElementById("down").value
 
     showSettings();
 }
@@ -853,7 +877,7 @@ function chooseFoodColor() {
     $("#Game").hide();
 }
 
-function placePacMan() {
+function placeRandom(character, id) {
     var placed = false;
     while (!placed) {
         var randRow = Math.floor(Math.random() * 13);
@@ -861,9 +885,9 @@ function placePacMan() {
         if (board[randCol][randRow] != 4 && board[randCol][randRow] != 1 &&
             board[randCol][randRow] != 5 && board[randCol][randRow] != 6 && 
             board[randCol][randRow] != -1 && !atCorners(randRow, randCol)) {
-            board[randCol][randRow] = 2;
-            pacmanPosition.i = randCol;
-            pacmanPosition.j = randRow;
+            board[randCol][randRow] = id;
+            character.i = randCol;
+            character.j = randRow;
             placed = true;
         }
     }
